@@ -29,6 +29,12 @@ class TrolleyMovementController extends Controller
             'driver_snapshot' => ['nullable', 'string', 'max:120'],
         ]);
 
+        if ($trolley->type === 'internal') {
+            return response()->json([
+                'message' => 'Troli internal tidak diperbolehkan keluar area.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         if ($trolley->status === 'out') {
             return response()->json([
                 'message' => 'Troli sedang tidak tersedia.',

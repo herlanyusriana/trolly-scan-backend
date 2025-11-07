@@ -7,6 +7,7 @@ use App\Models\Driver;
 use App\Models\TrolleyMovement;
 use App\Models\Vehicle;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Response;
@@ -112,6 +113,35 @@ class MovementHistoryController extends Controller
             fclose($handle);
         }, $filename, [
             'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    public function refresh(Request $request): JsonResponse
+    {
+        $filters = $this->validateFilters($request);
+        $query = $this->buildQuery($filters);
+
+        $activeFilters = array_filter(
+            $filters,
+            static fn ($value) => $value !== null && $value !== ''
+        );
+
+        $movements = (clone $query)
+            ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
+            ->latest('checked_out_at')
+            ->paginate(15)
+            ->appends($activeFilters);
+
+        $stats = [
+            'total' => (clone $query)->count(),
+            'out' => (clone $query)->where('status', 'out')->count(),
+            'in' => (clone $query)->where('status', 'in')->count(),
+        ];
+
+        return response()->json([
+            'stats' => $stats,
+            'table' => view('admin.history.partials.table-body', ['movements' => $movements])->render(),
+            'pagination' => $movements->links()->render(),
         ]);
     }
 

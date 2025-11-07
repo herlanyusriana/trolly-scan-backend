@@ -6,13 +6,50 @@ use App\Http\Controllers\Controller;
 use App\Models\MobileUser;
 use App\Models\Trolley;
 use App\Models\TrolleyMovement;
+use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     public function index(): View
     {
-        $stats = [
+        $stats = $this->getStats();
+        $recentMovements = $this->getRecentMovements();
+        $pendingUsers = $this->getPendingUsers();
+
+        return view('admin.dashboard', [
+            'stats' => $stats,
+            'recentMovements' => $recentMovements,
+            'pendingUsers' => $pendingUsers,
+            'statusPills' => [
+                'in' => 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200',
+                'out' => 'border-rose-400/40 bg-rose-500/10 text-rose-200',
+            ],
+        ]);
+    }
+
+    public function realtime(): JsonResponse
+    {
+        $stats = $this->getStats();
+        $recentMovements = $this->getRecentMovements();
+
+        return response()->json([
+            'stats' => [
+                'in' => $stats['trolleys']['in'],
+                'out' => $stats['trolleys']['out'],
+                'approved' => $stats['mobile_users']['approved'],
+                'pending' => $stats['mobile_users']['pending'],
+                'kinds' => $stats['trolleys']['kinds'],
+            ],
+            'table' => view('admin.dashboard.partials.recent-rows', [
+                'recentMovements' => $recentMovements,
+            ])->render(),
+        ]);
+    }
+
+    protected function getStats(): array
+    {
+        return [
             'mobile_users' => [
                 'pending' => MobileUser::query()->where('status', 'pending')->count(),
                 'approved' => MobileUser::query()->where('status', 'approved')->count(),
@@ -32,27 +69,23 @@ class DashboardController extends Controller
                 'out' => Trolley::query()->where('status', 'out')->count(),
             ],
         ];
+    }
 
-        $recentMovements = TrolleyMovement::query()
+    protected function getRecentMovements()
+    {
+        return TrolleyMovement::query()
             ->with(['trolley', 'mobileUser'])
             ->latest('checked_out_at')
             ->limit(20)
             ->get();
+    }
 
-        $pendingUsers = MobileUser::query()
+    protected function getPendingUsers()
+    {
+        return MobileUser::query()
             ->where('status', 'pending')
             ->latest()
             ->limit(5)
             ->get();
-
-        return view('admin.dashboard', [
-            'stats' => $stats,
-            'recentMovements' => $recentMovements,
-            'pendingUsers' => $pendingUsers,
-            'statusPills' => [
-                'in' => 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200',
-                'out' => 'border-rose-400/40 bg-rose-500/10 text-rose-200',
-            ],
-        ]);
     }
 }

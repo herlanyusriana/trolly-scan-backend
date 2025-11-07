@@ -17,7 +17,11 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 pb-12">
+    <div
+        class="space-y-8 pb-12"
+        data-history-root
+        data-history-url="{{ route('admin.history.refresh') }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}"
+    >
         <section>
             <h2 class="text-xl font-semibold text-white">Ringkasan Aktivitas</h2>
             <p class="mt-1 text-sm text-slate-400">
@@ -26,17 +30,17 @@
             <div class="mt-4 grid gap-4 sm:grid-cols-3">
                 <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-5 shadow-lg shadow-slate-950/30">
                     <p class="text-xs uppercase tracking-wide text-slate-400">Total Event</p>
-                    <span class="mt-3 block text-3xl font-semibold text-white">{{ number_format($stats['total']) }}</span>
+                    <span class="mt-3 block text-3xl font-semibold text-white" data-history-stat="total">{{ number_format($stats['total']) }}</span>
                     <p class="mt-2 text-xs text-slate-500">Pergerakan tercatat dalam rentang waktu yang dipilih.</p>
                 </div>
                 <div class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-5 shadow-lg shadow-rose-900/30">
                     <p class="text-xs uppercase tracking-wide text-rose-200/80">Sedang Keluar</p>
-                    <span class="mt-3 block text-3xl font-semibold text-rose-100">{{ number_format($stats['out']) }}</span>
+                    <span class="mt-3 block text-3xl font-semibold text-rose-100" data-history-stat="out">{{ number_format($stats['out']) }}</span>
                     <p class="mt-2 text-xs text-rose-200/70">Troli masih berada di luar area penyimpanan.</p>
                 </div>
                 <div class="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-5 shadow-lg shadow-emerald-900/30">
                     <p class="text-xs uppercase tracking-wide text-emerald-200/70">Sudah Kembali</p>
-                    <span class="mt-3 block text-3xl font-semibold text-emerald-100">{{ number_format($stats['in']) }}</span>
+                    <span class="mt-3 block text-3xl font-semibold text-emerald-100" data-history-stat="in">{{ number_format($stats['in']) }}</span>
                     <p class="mt-2 text-xs text-emerald-200/60">Troli yang sudah melakukan proses check-in.</p>
                 </div>
             </div>
@@ -67,6 +71,7 @@
                         method="GET"
                         action="{{ route('admin.history.index') }}"
                         class="grid gap-4 md:grid-cols-3 xl:grid-cols-4"
+                        data-history-form
                     >
                     <div class="flex flex-col gap-2">
                         <label for="date_from" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Dari Tanggal</label>
@@ -205,68 +210,13 @@
                             <th class="px-6 py-3 text-left font-semibold">Masuk</th>
                         </tr>
                     </thead>
-                    @php
-                        $eventRows = [];
-                        foreach ($movements as $movement) {
-                            $eventRows[] = ['movement' => $movement, 'type' => 'out'];
-                            if ($movement->checked_in_at) {
-                                $eventRows[] = ['movement' => $movement, 'type' => 'in'];
-                            }
-                        }
-                    @endphp
-                    <tbody class="divide-y divide-slate-800/70">
-                        @forelse ($eventRows as $event)
-                            @php
-                                /** @var \App\Models\TrolleyMovement $movement */
-                                $movement = $event['movement'];
-                                $isOutEvent = $event['type'] === 'out';
-                                $statusBadgeClasses = $isOutEvent
-                                    ? 'border-rose-400/40 bg-rose-500/10 text-rose-200'
-                                    : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200';
-                                $statusLabel = $isOutEvent ? 'OUT' : 'IN';
-                                $checkedOutAt = optional($movement->checked_out_at)->format('d M Y H:i');
-                                $checkedInAt = optional($movement->checked_in_at)->format('d M Y H:i');
-                            @endphp
-                            <tr class="transition hover:bg-slate-900/60">
-                                <td class="px-6 py-4 text-slate-300">
-                                    {{ $movement->sequence_number ? str_pad((string) $movement->sequence_number, 2, '0', STR_PAD_LEFT) : '—' }}
-                                </td>
-                                <td class="px-6 py-4 font-semibold text-white">{{ $movement->trolley?->code ?? '-' }}</td>
-                                <td class="px-6 py-4 text-slate-300">{{ $movement->trolley?->type_label ?? '—' }}</td>
-                                <td class="px-6 py-4 text-slate-300">{{ $movement->trolley?->kind_label ?? '—' }}</td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $statusBadgeClasses }}">
-                                        {{ $statusLabel }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-300">{{ $movement->mobileUser?->name ?? '—' }}</td>
-                                <td class="px-6 py-4 text-slate-300">
-                                    {{ $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '—' }}
-                                </td>
-                                <td class="px-6 py-4 text-slate-300">
-                                    {{ $movement->driver?->name ?? $movement->driver_snapshot ?? '—' }}
-                                </td>
-                                <td class="px-6 py-4 text-slate-300">{{ $movement->destination ?? '—' }}</td>
-                                <td class="px-6 py-4 text-slate-500">{{ $movement->notes ?? '—' }}</td>
-                                <td class="px-6 py-4 text-slate-400">
-                                    {{ $checkedOutAt ?? '—' }}
-                                </td>
-                                <td class="px-6 py-4 text-slate-500">
-                                    {{ $checkedInAt ?? '—' }}
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="12" class="px-6 py-12 text-center text-slate-500">
-                                    Belum ada data pergerakan sesuai filter.
-                                </td>
-                            </tr>
-                        @endforelse
+                    <tbody class="divide-y divide-slate-800/70" data-history-table>
+                        @include('admin.history.partials.table-body', ['movements' => $movements])
                     </tbody>
                 </table>
             </div>
 
-            <div class="border-t border-slate-800/60 px-6 py-4">
+            <div class="border-t border-slate-800/60 px-6 py-4" data-history-pagination>
                 {{ $movements->links() }}
             </div>
         </section>

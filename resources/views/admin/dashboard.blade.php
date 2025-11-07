@@ -5,12 +5,16 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="grid gap-6">
+<div
+    class="grid gap-6"
+    data-dashboard-realtime
+    data-dashboard-url="{{ route('admin.dashboard.realtime') }}"
+>
         <div class="grid gap-6 lg:grid-cols-2">
             <div class="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-xl shadow-emerald-900/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">Troli Masuk</p>
                 <div class="mt-4 flex items-end gap-3">
-                    <span class="text-3xl font-semibold text-white">{{ $stats['trolleys']['in'] }}</span>
+                <span class="text-3xl font-semibold text-white" data-dashboard-in>{{ number_format($stats['trolleys']['in']) }}</span>
                     <span class="rounded-full border px-3 py-1 text-xs font-semibold {{ $statusPills['in'] }}">IN</span>
                 </div>
                 <p class="mt-6 text-xs text-slate-500">Jumlah troli yang saat ini tersedia di area penyimpanan.</p>
@@ -19,7 +23,7 @@
             <div class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-6 shadow-xl shadow-rose-900/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">Troli Keluar</p>
                 <div class="mt-4 flex items-end gap-3">
-                    <span class="text-3xl font-semibold text-white">{{ $stats['trolleys']['out'] }}</span>
+                <span class="text-3xl font-semibold text-white" data-dashboard-out>{{ number_format($stats['trolleys']['out']) }}</span>
                     <span class="rounded-full border px-3 py-1 text-xs font-semibold {{ $statusPills['out'] }}">OUT</span>
                 </div>
                 <p class="mt-6 text-xs text-slate-500">Troli yang sedang digunakan dan belum melakukan check-in.</p>
@@ -29,13 +33,13 @@
         <div class="grid gap-6 lg:grid-cols-2 xl:grid-cols-4">
             <div class="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-6 shadow-xl shadow-blue-900/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">User Mobile Disetujui</p>
-                <div class="mt-4 text-3xl font-semibold text-white">{{ $stats['mobile_users']['approved'] }}</div>
+                <div class="mt-4 text-3xl font-semibold text-white" data-dashboard-approved>{{ number_format($stats['mobile_users']['approved']) }}</div>
                 <p class="mt-6 text-xs text-slate-500">User aktif yang dapat mengakses aplikasi mobile.</p>
             </div>
 
             <div class="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-6 shadow-xl shadow-amber-900/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">Permintaan Menunggu</p>
-                <div class="mt-4 text-3xl font-semibold text-white">{{ $stats['mobile_users']['pending'] }}</div>
+                <div class="mt-4 text-3xl font-semibold text-white" data-dashboard-pending>{{ number_format($stats['mobile_users']['pending']) }}</div>
                 <p class="mt-6 text-xs text-slate-500">Permintaan akun yang perlu ditinjau oleh admin.</p>
             </div>
         </div>
@@ -60,45 +64,8 @@
                                 <th class="px-6 py-3 text-left font-semibold">Waktu Masuk</th>
                             </tr>
                         </thead>
-                        @php
-                            $dashboardRows = [];
-                            foreach ($recentMovements as $movement) {
-                                $dashboardRows[] = ['movement' => $movement, 'type' => 'out'];
-                                if ($movement->checked_in_at) {
-                                    $dashboardRows[] = ['movement' => $movement, 'type' => 'in'];
-                                }
-                            }
-                        @endphp
-                        <tbody class="divide-y divide-slate-800/80">
-                            @forelse($dashboardRows as $row)
-                                @php
-                                    /** @var \App\Models\TrolleyMovement $movement */
-                                    $movement = $row['movement'];
-                                    $isOut = $row['type'] === 'out';
-                                    $badgeClass = $isOut
-                                        ? 'border-rose-400/40 bg-rose-500/10 text-rose-200'
-                                        : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200';
-                                    $statusLabel = $isOut ? 'OUT' : 'IN';
-                                    $checkedOutAt = optional($movement->checked_out_at)->format('d M Y H:i');
-                                    $checkedInAt = optional($movement->checked_in_at)->format('d M Y H:i');
-                                @endphp
-                                <tr class="transition hover:bg-slate-900/60">
-                                    <td class="px-6 py-3 font-medium text-white">{{ $movement->trolley->code }}</td>
-                                    <td class="px-6 py-3 text-slate-400">{{ $movement->mobileUser?->name ?? '-' }}</td>
-                                    <td class="px-6 py-3">
-                                        <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $badgeClass }}">
-                                            {{ $statusLabel }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-3 text-slate-400">{{ $movement->destination ?? '-' }}</td>
-                                    <td class="px-6 py-3 text-slate-400">{{ $isOut ? ($checkedOutAt ?? '-') : '—' }}</td>
-                                    <td class="px-6 py-3 text-slate-500">{{ $isOut ? '—' : ($checkedInAt ?? '-') }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-6 py-10 text-center ന്യൂ text-slate-500">Belum ada data pergerakan.</td>
-                                </tr>
-                            @endforelse
+                        <tbody class="divide-y divide-slate-800/80" data-dashboard-table>
+                            @include('admin.dashboard.partials.recent-rows', ['recentMovements' => $recentMovements])
                         </tbody>
                     </table>
                 </div>
@@ -137,17 +104,17 @@
     <div class="mt-8 grid gap-4 md:grid-cols-3">
         <div class="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-5 shadow-lg shadow-blue-900/30">
             <p class="text-xs uppercase tracking-wide text-blue-200/70">Reinforce</p>
-            <span class="mt-3 block text-2xl font-semibold text-blue-100">{{ $stats['trolleys']['kinds']['reinforce'] }}</span>
+            <span class="mt-3 block text-2xl font-semibold text-blue-100" data-dashboard-kind="reinforce">{{ number_format($stats['trolleys']['kinds']['reinforce']) }}</span>
             <p class="mt-2 text-xs text-blue-200/60">Troli dengan struktur reinforce yang tercatat.</p>
         </div>
         <div class="rounded-3xl border border-purple-500/30 bg-purple-500/10 p-5 shadow-lg shadow-purple-900/30">
             <p class="text-xs uppercase tracking-wide text-purple-200/70">Backplate</p>
-            <span class="mt-3 block text-2xl font-semibold text-purple-100">{{ $stats['trolleys']['kinds']['backplate'] }}</span>
+            <span class="mt-3 block text-2xl font-semibold text-purple-100" data-dashboard-kind="backplate">{{ number_format($stats['trolleys']['kinds']['backplate']) }}</span>
             <p class="mt-2 text-xs text-purple-200/60">Troli jenis backplate yang tersedia.</p>
         </div>
         <div class="rounded-3xl border border-cyan-500/30 bg-cyan-500/10 p-5 shadow-lg shadow-cyan-900/30">
             <p class="text-xs uppercase tracking-wide text-cyan-200/70">CompBase</p>
-            <span class="mt-3 block text-2xl font-semibold text-cyan-100">{{ $stats['trolleys']['kinds']['compbase'] }}</span>
+            <span class="mt-3 block text-2xl font-semibold text-cyan-100" data-dashboard-kind="compbase">{{ number_format($stats['trolleys']['kinds']['compbase']) }}</span>
             <p class="mt-2 text-xs text-cyan-200/60">Troli tipe compbase yang terdaftar.</p>
         </div>
     </div>

@@ -59,7 +59,10 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
         ]);
 
-        $this->call(BackplateTrolleySeeder::class);
+        $this->call([
+            BackplateTrolleySeeder::class,
+            CompbaseTrolleySeeder::class,
+        ]);
 
         $this->command?->info(sprintf('Default admin created: %s / password', $admin->email));
     }

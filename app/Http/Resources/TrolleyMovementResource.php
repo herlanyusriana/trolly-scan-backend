@@ -27,6 +27,14 @@ class TrolleyMovementResource extends JsonResource
             'driver_id' => $this->driver_id,
             'vehicle_snapshot' => $this->vehicle_snapshot,
             'driver_snapshot' => $this->driver_snapshot,
+            'trolley' => $this->whenLoaded('trolley', function () {
+                return [
+                    'id' => $this->trolley?->id,
+                    'code' => $this->trolley?->code,
+                    'type' => $this->trolley?->type,
+                    'kind' => $this->trolley?->kind,
+                ];
+            }),
             'mobile_user' => $this->whenLoaded('mobileUser', function () {
                 return [
                     'id' => $this->mobileUser?->id,

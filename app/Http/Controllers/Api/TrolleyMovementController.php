@@ -112,7 +112,7 @@ class TrolleyMovementController extends Controller
             return $movement;
         });
 
-        return (new TrolleyMovementResource($movement->load(['mobileUser', 'vehicle', 'driver'])))
+        return (new TrolleyMovementResource($movement->load(['trolley', 'mobileUser', 'vehicle', 'driver'])))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
     }
@@ -146,7 +146,7 @@ class TrolleyMovementController extends Controller
             'location' => $data['location'],
         ]);
 
-        return (new TrolleyMovementResource($movement->fresh()->load(['mobileUser', 'vehicle', 'driver'])))->response();
+        return (new TrolleyMovementResource($movement->fresh()->load(['trolley', 'mobileUser', 'vehicle', 'driver'])))->response();
     }
 
     public function history(Trolley $trolley): AnonymousResourceCollection

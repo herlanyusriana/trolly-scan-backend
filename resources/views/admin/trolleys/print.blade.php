@@ -175,7 +175,6 @@
                 @foreach ($trolleys as $trolley)
                     <article>
                         <h2>{{ $trolley->code }}</h2>
-                        <p>{{ strtoupper($trolley->status) }}</p>
                         <img src="{{ asset('storage/' . $trolley->qr_code_path) }}" alt="QR Code Troli {{ $trolley->code }}">
                     </article>
                 @endforeach

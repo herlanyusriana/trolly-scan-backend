@@ -62,6 +62,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BackplateTrolleySeeder::class,
             CompbaseTrolleySeeder::class,
+            ReinforceTrolleySeeder::class,
         ]);
 
         $this->command?->info(sprintf('Default admin created: %s / password', $admin->email));

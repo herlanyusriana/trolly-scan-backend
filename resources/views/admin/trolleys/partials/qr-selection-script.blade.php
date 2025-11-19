@@ -2,25 +2,37 @@
     @push('scripts')
         <script type="module">
             window.qrSelection = window.qrSelection ?? function ({ ids = [] } = {}) {
+                const normalizeIds = (values) => {
+                    return Array.from(
+                        new Set(
+                            values
+                                .map((value) => Number(value))
+                                .filter((value) => Number.isInteger(value) && value > 0),
+                        ),
+                    );
+                };
+
                 return {
-                    ids: Array.from(new Set(ids)),
+                    ids: normalizeIds(ids),
                     selected: [],
                     allSelected: false,
                     get selectedSize() {
                         return this.selected.length;
                     },
                     isSelected(id) {
-                        return this.selected.includes(id);
+                        const normalized = Number(id);
+                        return this.selected.includes(normalized);
                     },
                     toggle({ id }) {
-                        if (!this.ids.includes(id)) {
+                        const normalized = Number(id);
+                        if (!this.ids.includes(normalized)) {
                             return;
                         }
 
-                        if (this.isSelected(id)) {
-                            this.selected = this.selected.filter((value) => value !== id);
+                        if (this.isSelected(normalized)) {
+                            this.selected = this.selected.filter((value) => value !== normalized);
                         } else {
-                            this.selected = [...this.selected, id];
+                            this.selected = [...this.selected, normalized];
                         }
 
                         this.allSelected = this.selected.length === this.ids.length && this.ids.length > 0;

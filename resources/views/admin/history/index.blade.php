@@ -1,13 +1,8 @@
 @php
     $title = 'Movement History';
-    $filterStatus = $filters['status'] ?? '';
     $dateFrom = $filters['date_from'] ?? null;
     $dateTo = $filters['date_to'] ?? null;
-    $trolleyCode = $filters['trolley_code'] ?? null;
-    $search = $filters['search'] ?? null;
-    $vehicleId = $filters['vehicle_id'] ?? null;
-    $driverId = $filters['driver_id'] ?? null;
-    $kind = $filters['kind'] ?? null;
+    $sequenceNumber = $filters['sequence_number'] ?? null;
     $activeFilters = $activeFilters ?? array_filter(
         $filters,
         fn ($value) => $value !== null && $value !== ''
@@ -94,81 +89,16 @@
                         >
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label for="status" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Status</label>
-                        <select
-                            id="status"
-                            name="status"
-                            class="rounded-2xl border border-slate-700/70 bg-slate-900 px-4 py-2 text-sm text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                        >
-                            <option value="">Semua Status</option>
-                            <option value="out" @selected($filterStatus === 'out')>Keluar</option>
-                            <option value="in" @selected($filterStatus === 'in')>Masuk</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="trolley_code" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Kode Troli</label>
+                        <label for="sequence_number" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Nomor Urutan Keberangkatan</label>
                         <input
-                            id="trolley_code"
-                            type="text"
-                            name="trolley_code"
-                            value="{{ $trolleyCode }}"
-                            placeholder="Misal: TL-001"
+                            id="sequence_number"
+                            type="number"
+                            min="1"
+                            name="sequence_number"
+                            value="{{ $sequenceNumber }}"
+                            placeholder="Misal: 12"
                             class="rounded-2xl border border-slate-700/70 bg-slate-900 px-4 py-2 text-sm text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                         >
-                    </div>
-                    <div class="flex flex-col gap-2 md:col-span-3 xl:col-span-2">
-                        <label for="search" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Cari Catatan / Driver</label>
-                        <input
-                            id="search"
-                            type="text"
-                            name="search"
-                            value="{{ $search }}"
-                            placeholder="Cari driver, catatan atau tujuan"
-                            class="rounded-2xl border border-slate-700/70 bg-slate-900 px-4 py-2 text-sm text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                        >
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="kind" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Tipe Troli</label>
-                        <select
-                            id="kind"
-                            name="kind"
-                            class="rounded-2xl border border-slate-700/70 bg-slate-900 px-4 py-2 text-sm text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                        >
-                            <option value="">Semua Tipe</option>
-                            @foreach (\App\Models\Trolley::KIND_LABELS as $value => $label)
-                                <option value="{{ $value }}" @selected($kind === $value)>{{ $label }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="vehicle_id" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Kendaraan</label>
-                        <select
-                            id="vehicle_id"
-                            name="vehicle_id"
-                            class="rounded-2xl border border-slate-700/70 bg-slate-900 px-4 py-2 text-sm text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                        >
-                            <option value="">Semua Kendaraan</option>
-                            @foreach ($vehicles as $vehicle)
-                                <option value="{{ $vehicle->id }}" @selected((string) $vehicleId === (string) $vehicle->id)>
-                                    {{ $vehicle->plate_number }}{{ $vehicle->name ? ' - ' . $vehicle->name : '' }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="driver_id" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Driver</label>
-                        <select
-                            id="driver_id"
-                            name="driver_id"
-                            class="rounded-2xl border border-slate-700/70 bg-slate-900 px-4 py-2 text-sm text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                        >
-                            <option value="">Semua Driver</option>
-                            @foreach ($drivers as $driver)
-                                <option value="{{ $driver->id }}" @selected((string) $driverId === (string) $driver->id)>
-                                    {{ $driver->name }}
-                                </option>
-                            @endforeach
-                        </select>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-3 md:col-span-3 xl:col-span-4">

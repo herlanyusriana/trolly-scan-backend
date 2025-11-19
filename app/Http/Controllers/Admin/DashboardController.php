@@ -95,7 +95,7 @@ class DashboardController extends Controller
     {
         return TrolleyMovement::query()
             ->with(['trolley', 'mobileUser'])
-            ->latest('checked_out_at')
+            ->orderByRaw('COALESCE(checked_in_at, checked_out_at, created_at) DESC')
             ->limit(20)
             ->get();
     }

@@ -26,6 +26,7 @@ const initDashboardRealtime = () => {
     const elApproved = root.querySelector('[data-dashboard-approved]');
     const elPending = root.querySelector('[data-dashboard-pending]');
     const kindEls = root.querySelectorAll('[data-dashboard-kind]');
+    const kindOutEls = root.querySelectorAll('[data-dashboard-kind-out]');
     const tableEl = root.querySelector('[data-dashboard-table]');
 
     const updateStats = (stats) => {
@@ -39,6 +40,14 @@ const initDashboardRealtime = () => {
                 const kindKey = el.dataset.dashboardKind;
                 if (kindKey && typeof stats.kinds[kindKey] !== 'undefined') {
                     el.textContent = Number(stats.kinds[kindKey]).toLocaleString('id-ID');
+                }
+            });
+        }
+        if (stats.kinds_out) {
+            kindOutEls.forEach((el) => {
+                const kindKey = el.dataset.dashboardKindOut;
+                if (kindKey && typeof stats.kinds_out[kindKey] !== 'undefined') {
+                    el.textContent = Number(stats.kinds_out[kindKey]).toLocaleString('id-ID');
                 }
             });
         }

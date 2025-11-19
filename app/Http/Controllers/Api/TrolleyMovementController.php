@@ -27,6 +27,7 @@ class TrolleyMovementController extends Controller
             'driver_id' => ['nullable', 'integer', 'exists:drivers,id'],
             'vehicle_snapshot' => ['nullable', 'string', 'max:120'],
             'driver_snapshot' => ['nullable', 'string', 'max:120'],
+            'sequence_number' => ['nullable', 'integer', 'min:1'],
         ]);
 
         if ($trolley->type === 'internal') {
@@ -89,11 +90,14 @@ class TrolleyMovementController extends Controller
                 ->whereBetween('checked_out_at', [$periodStart, $periodEnd])
                 ->max('sequence_number') ?? 0;
 
+            $requestedSequence = data_get($data, 'sequence_number');
+            $sequenceNumber = $requestedSequence ?: ($lastSequence + 1);
+
             $movement = TrolleyMovement::query()->create([
                 'trolley_id' => $trolley->id,
                 'mobile_user_id' => $user->id,
                 'status' => 'out',
-                'sequence_number' => $lastSequence + 1,
+                'sequence_number' => $sequenceNumber,
                 'checked_out_at' => $now,
                 'expected_return_at' => data_get($data, 'expected_return_at'),
                 'destination' => data_get($data, 'destination'),

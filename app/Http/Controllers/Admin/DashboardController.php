@@ -40,6 +40,7 @@ class DashboardController extends Controller
                 'approved' => $stats['mobile_users']['approved'],
                 'pending' => $stats['mobile_users']['pending'],
                 'kinds' => $stats['trolleys']['kinds'],
+                'kinds_out' => $stats['trolleys']['kinds_out'],
             ],
             'table' => view('admin.dashboard.partials.recent-rows', [
                 'recentMovements' => $recentMovements,
@@ -49,6 +50,24 @@ class DashboardController extends Controller
 
     protected function getStats(): array
     {
+        $trolleyKinds = [
+            'reinforce' => 'reinforce',
+            'backplate' => 'backplate',
+            'compbase' => 'compbase',
+        ];
+
+        $outCounts = Trolley::query()
+            ->selectRaw('COALESCE(kind, "unknown") as kind, COUNT(*) as total')
+            ->where('status', 'out')
+            ->groupBy('kind')
+            ->pluck('total', 'kind')
+            ->toArray();
+
+        $kindsOut = [];
+        foreach ($trolleyKinds as $label => $kindKey) {
+            $kindsOut[$label] = (int) ($outCounts[$kindKey] ?? 0);
+        }
+
         return [
             'mobile_users' => [
                 'pending' => MobileUser::query()->where('status', 'pending')->count(),
@@ -65,6 +84,7 @@ class DashboardController extends Controller
                     'backplate' => Trolley::query()->where('kind', 'backplate')->count(),
                     'compbase' => Trolley::query()->where('kind', 'compbase')->count(),
                 ],
+                'kinds_out' => $kindsOut,
                 'in' => Trolley::query()->where('status', 'in')->count(),
                 'out' => Trolley::query()->where('status', 'out')->count(),
             ],

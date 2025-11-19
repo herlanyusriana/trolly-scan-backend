@@ -24,8 +24,9 @@
             ? 'border-rose-400/40 bg-rose-500/10 text-rose-200'
             : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200';
         $statusLabel = $isOut ? 'OUT' : 'IN';
-        $checkedOutAt = optional($movement->checked_out_at)->format('d M Y H:i');
-        $checkedInAt = optional($movement->checked_in_at)->format('d M Y H:i');
+        $timestamp = $isOut
+            ? optional($movement->checked_out_at)->format('d M Y H:i')
+            : optional($movement->checked_in_at)->format('d M Y H:i');
     @endphp
     <tr class="transition hover:bg-slate-900/60">
         <td class="px-6 py-3 font-medium text-white">{{ $movement->trolley->code }}</td>
@@ -36,11 +37,10 @@
             </span>
         </td>
         <td class="px-6 py-3 text-slate-400">{{ $movement->destination ?? '-' }}</td>
-        <td class="px-6 py-3 text-slate-400">{{ $checkedOutAt ?? '—' }}</td>
-        <td class="px-6 py-3 text-slate-500">{{ $checkedInAt ?? '—' }}</td>
+        <td class="px-6 py-3 text-slate-400">{{ $timestamp ?? '—' }}</td>
     </tr>
 @empty
     <tr>
-        <td colspan="6" class="px-6 py-10 text-center text-slate-500">Belum ada data pergerakan.</td>
+        <td colspan="5" class="px-6 py-10 text-center text-slate-500">Belum ada data pergerakan.</td>
     </tr>
 @endforelse

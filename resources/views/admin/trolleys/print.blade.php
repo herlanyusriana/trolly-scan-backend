@@ -8,6 +8,9 @@
             :root {
                 color-scheme: light;
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+                --page-padding: 1in;
+                --card-padding: 0.9rem;
+                --qr-size: 180px;
             }
 
             body {
@@ -61,24 +64,28 @@
                 border: 1px solid rgba(148, 163, 184, 0.2);
                 border-radius: 1.5rem;
                 padding: 1.5rem;
+                page-break-inside: avoid;
             }
 
             .grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-                gap: 1.25rem;
+                grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+                gap: 1rem;
+                align-items: start;
             }
 
             article {
                 background: rgba(30, 41, 59, 0.9);
                 border: 1px solid rgba(148, 163, 184, 0.15);
                 border-radius: 1.25rem;
-                padding: 1.25rem;
+                padding: var(--card-padding);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
                 gap: 0.75rem;
+                height: 100%;
+                box-sizing: border-box;
             }
 
             article h2 {
@@ -97,13 +104,14 @@
             }
 
             article img {
-                width: 160px;
-                height: 160px;
+                width: var(--qr-size);
+                height: var(--qr-size);
                 object-fit: contain;
                 background: white;
                 padding: 0.75rem;
                 border-radius: 0.75rem;
                 box-shadow: 0 12px 25px rgba(15, 23, 42, 0.35);
+                border: 1px solid rgba(148, 163, 184, 0.25);
             }
 
             footer {
@@ -117,7 +125,7 @@
                 body {
                     background: white;
                     color: black;
-                    padding: 0.5in;
+                    padding: var(--page-padding);
                 }
 
                 header, footer {
@@ -130,20 +138,26 @@
                     background: transparent;
                 }
 
+                .grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0.35in;
+                }
+
                 article {
                     border: 1px solid #cbd5f5;
                     background: white;
                     box-shadow: none;
                     color: black;
+                    padding: 0.7in 0.55in;
+                    page-break-inside: avoid;
                 }
 
                 article img {
                     box-shadow: none;
                     border: 1px solid #cbd5f5;
-                }
-
-                .grid {
-                    gap: 0.75rem;
+                    width: 2.75in;
+                    height: 2.75in;
+                    padding: 0.25in;
                 }
             }
         </style>

@@ -58,7 +58,7 @@ class MovementHistoryController extends Controller
             $handle = fopen('php://output', 'w');
 
             fputcsv($handle, [
-                'Sequence',
+                'Sequence (OUT only)',
                 'Trolley',
                 'Status',
                 'Destination / Location',
@@ -98,7 +98,7 @@ class MovementHistoryController extends Controller
 
                     if ($movement->checked_in_at) {
                         fputcsv($handle, [
-                            $sequence,
+                            '-', // IN rows do not expose sequence number
                             $trolleyCode,
                             'IN',
                             $returnLocation,

@@ -25,7 +25,7 @@
     @endphp
     <tr class="transition hover:bg-slate-900/60">
         <td class="px-6 py-4 text-slate-300">
-            {{ $movement->sequence_number ? str_pad((string) $movement->sequence_number, 2, '0', STR_PAD_LEFT) : '—' }}
+            {{ $isOutEvent && $movement->sequence_number ? str_pad((string) $movement->sequence_number, 2, '0', STR_PAD_LEFT) : '—' }}
         </td>
         <td class="px-6 py-4 font-semibold text-white">{{ $movement->trolley?->code ?? '-' }}</td>
         <td class="px-6 py-4 text-slate-300">{{ $movement->trolley?->type_label ?? '—' }}</td>

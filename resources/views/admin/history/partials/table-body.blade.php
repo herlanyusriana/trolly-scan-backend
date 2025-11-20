@@ -1,11 +1,23 @@
 @php
     $eventRows = [];
+    $hideInEvents = request()->filled('sequence_number');
     foreach ($movements as $movement) {
         $eventRows[] = ['movement' => $movement, 'type' => 'out'];
-        if ($movement->checked_in_at) {
+        if ($movement->checked_in_at && ! $hideInEvents) {
             $eventRows[] = ['movement' => $movement, 'type' => 'in'];
         }
     }
+
+    // Sort combined events newest first
+    usort($eventRows, static function (array $a, array $b): int {
+        $aTime = $a['type'] === 'out'
+            ? optional($a['movement']->checked_out_at)->getTimestamp()
+            : optional($a['movement']->checked_in_at ?? $a['movement']->checked_out_at)->getTimestamp();
+        $bTime = $b['type'] === 'out'
+            ? optional($b['movement']->checked_out_at)->getTimestamp()
+            : optional($b['movement']->checked_in_at ?? $b['movement']->checked_out_at)->getTimestamp();
+        return ($bTime ?? 0) <=> ($aTime ?? 0);
+    });
 @endphp
 
 @forelse ($eventRows as $event)

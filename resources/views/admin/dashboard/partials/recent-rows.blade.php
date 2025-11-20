@@ -4,15 +4,23 @@
         $dashboardRows[] = [
             'movement' => $movement,
             'type' => 'out',
+            'sortKey' => $movement->checked_out_at ?? $movement->created_at,
         ];
 
         if ($movement->checked_in_at) {
             $dashboardRows[] = [
                 'movement' => $movement,
                 'type' => 'in',
+                'sortKey' => $movement->checked_in_at ?? $movement->checked_out_at ?? $movement->created_at,
             ];
         }
     }
+
+    usort($dashboardRows, static function (array $a, array $b): int {
+        $aTime = $a['sortKey'] ? $a['sortKey']->getTimestamp() : 0;
+        $bTime = $b['sortKey'] ? $b['sortKey']->getTimestamp() : 0;
+        return $bTime <=> $aTime;
+    });
 @endphp
 
 @forelse ($dashboardRows as $row)

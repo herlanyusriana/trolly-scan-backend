@@ -72,28 +72,43 @@ class MovementHistoryController extends Controller
 
             $query->chunkById(500, function ($chunk) use ($handle): void {
                 foreach ($chunk as $movement) {
-                    $baseRow = [
-                        $movement->sequence_number ?? '-',
-                        $movement->trolley?->code ?? '-',
-                        $movement->destination ?? '-',
-                        optional($movement->checked_out_at)->format('d M Y H:i'),
-                        optional($movement->checked_in_at)->format('d M Y H:i'),
-                        $movement->mobileUser?->name ?? '-',
-                        $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '-',
-                        $movement->driver?->name ?? $movement->driver_snapshot ?? '-',
-                        $movement->notes ?? '-',
-                    ];
+                    $sequence = $movement->sequence_number ?? '-';
+                    $trolleyCode = $movement->trolley?->code ?? '-';
+                    $destination = $movement->destination ?? '-';
+                    $returnLocation = $movement->return_location ?? $movement->destination ?? '-';
+                    $checkedOutAt = optional($movement->checked_out_at)->format('d M Y H:i');
+                    $checkedInAt = optional($movement->checked_in_at)->format('d M Y H:i');
+                    $operator = $movement->mobileUser?->name ?? '-';
+                    $vehicle = $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '-';
+                    $driver = $movement->driver?->name ?? $movement->driver_snapshot ?? '-';
+                    $notes = $movement->notes ?? '-';
 
-                    fputcsv($handle, array_merge(
-                        [$baseRow[0], $baseRow[1], 'OUT'],
-                        array_slice($baseRow, 2)
-                    ));
+                    fputcsv($handle, [
+                        $sequence,
+                        $trolleyCode,
+                        'OUT',
+                        $destination,
+                        $checkedOutAt ?? '-',
+                        $checkedInAt ?? '-',
+                        $operator,
+                        $vehicle,
+                        $driver,
+                        $notes,
+                    ]);
 
                     if ($movement->checked_in_at) {
-                        fputcsv($handle, array_merge(
-                            [$baseRow[0], $baseRow[1], 'IN'],
-                            array_slice($baseRow, 2)
-                        ));
+                        fputcsv($handle, [
+                            $sequence,
+                            $trolleyCode,
+                            'IN',
+                            $returnLocation,
+                            $checkedOutAt ?? '-',
+                            $checkedInAt ?? '-',
+                            $operator,
+                            $vehicle,
+                            $driver,
+                            $notes,
+                        ]);
                     }
                 }
             });

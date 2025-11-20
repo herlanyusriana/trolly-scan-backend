@@ -29,6 +29,7 @@ class TrolleyMovement extends Model
         'expected_return_at',
         'checked_in_at',
         'destination',
+        'return_location',
         'notes',
         'vehicle_id',
         'driver_id',

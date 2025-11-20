@@ -22,6 +22,7 @@ class TrolleyMovementResource extends JsonResource
             'checked_in_at' => $this->checked_in_at,
             'expected_return_at' => $this->expected_return_at,
             'destination' => $this->destination,
+            'return_location' => $this->return_location,
             'notes' => $this->notes,
             'vehicle_id' => $this->vehicle_id,
             'driver_id' => $this->driver_id,

@@ -27,6 +27,9 @@
         $timestamp = $isOut
             ? optional($movement->checked_out_at)->format('d M Y H:i')
             : optional($movement->checked_in_at)->format('d M Y H:i');
+        $location = $isOut
+            ? ($movement->destination ?? '-')
+            : ($movement->return_location ?? $movement->destination ?? '-');
     @endphp
     <tr class="transition hover:bg-slate-900/60">
         <td class="px-6 py-3 font-medium text-white">{{ $movement->trolley->code }}</td>
@@ -36,7 +39,7 @@
                 {{ $statusLabel }}
             </span>
         </td>
-        <td class="px-6 py-3 text-slate-400">{{ $movement->destination ?? '-' }}</td>
+        <td class="px-6 py-3 text-slate-400">{{ $location }}</td>
         <td class="px-6 py-3 text-slate-400">{{ $timestamp ?? '—' }}</td>
     </tr>
 @empty

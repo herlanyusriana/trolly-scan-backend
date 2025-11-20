@@ -142,6 +142,7 @@ class TrolleyMovementController extends Controller
         $movement->update([
             'status' => 'in',
             'checked_in_at' => Carbon::now(),
+            'return_location' => $data['location'],
             'notes' => $data['notes'] ?? $movement->notes,
         ]);
 

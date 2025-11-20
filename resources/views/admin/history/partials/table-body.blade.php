@@ -19,6 +19,9 @@
         $statusLabel = $isOutEvent ? 'OUT' : 'IN';
         $checkedOutAt = optional($movement->checked_out_at)->format('d M Y H:i');
         $checkedInAt = optional($movement->checked_in_at)->format('d M Y H:i');
+        $location = $isOutEvent
+            ? ($movement->destination ?? '—')
+            : ($movement->return_location ?? $movement->destination ?? '—');
     @endphp
     <tr class="transition hover:bg-slate-900/60">
         <td class="px-6 py-4 text-slate-300">
@@ -39,7 +42,7 @@
         <td class="px-6 py-4 text-slate-300">
             {{ $movement->driver?->name ?? $movement->driver_snapshot ?? '—' }}
         </td>
-        <td class="px-6 py-4 text-slate-300">{{ $movement->destination ?? '—' }}</td>
+        <td class="px-6 py-4 text-slate-300">{{ $location }}</td>
         <td class="px-6 py-4 text-slate-500">{{ $movement->notes ?? '—' }}</td>
         <td class="px-6 py-4 text-slate-400">
             {{ $checkedOutAt ?? '—' }}

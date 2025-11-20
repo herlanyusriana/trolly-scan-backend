@@ -90,8 +90,9 @@
 
             article h2 {
                 margin: 0;
-                font-size: 1rem;
-                font-weight: 600;
+                font-size: 1.35rem;
+                font-weight: 800;
+                letter-spacing: 0.02em;
                 color: #f1f5f9;
             }
 

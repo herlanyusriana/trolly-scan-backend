@@ -153,6 +153,13 @@
                     page-break-inside: avoid;
                 }
 
+                article h2 {
+                    color: #0b1224;
+                    font-size: 1.5rem;
+                    font-weight: 900;
+                    letter-spacing: 0.04em;
+                }
+
                 article img {
                     box-shadow: none;
                     border: 1px solid #cbd5f5;

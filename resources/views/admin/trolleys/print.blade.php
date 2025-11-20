@@ -8,9 +8,9 @@
             :root {
                 color-scheme: light;
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-                --page-padding: 1in;
-                --card-padding: 0.9rem;
-                --qr-size: 180px;
+                --page-padding: 0.6in;
+                --card-padding: 0.85rem;
+                --qr-size: 170px;
             }
 
             body {
@@ -69,8 +69,8 @@
 
             .grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-                gap: 1rem;
+                grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+                gap: 0.9rem;
                 align-items: start;
             }
 
@@ -136,38 +136,38 @@
                 main {
                     border: none;
                     padding: 0;
-                    background: transparent;
-                }
-
-                .grid {
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 0.35in;
-                }
-
-                article {
-                    border: 1px solid #cbd5f5;
-                    background: white;
-                    box-shadow: none;
-                    color: black;
-                    padding: 0.7in 0.55in;
-                    page-break-inside: avoid;
-                }
-
-                article h2 {
-                    color: #0b1224;
-                    font-size: 1.5rem;
-                    font-weight: 900;
-                    letter-spacing: 0.04em;
-                }
-
-                article img {
-                    box-shadow: none;
-                    border: 1px solid #cbd5f5;
-                    width: 2.75in;
-                    height: 2.75in;
-                    padding: 0.25in;
-                }
+                background: transparent;
             }
+
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.25in;
+            }
+
+            article {
+                border: 1px solid #cbd5f5;
+                background: white;
+                box-shadow: none;
+                color: black;
+                padding: 0.5in 0.35in;
+                page-break-inside: avoid;
+            }
+
+            article h2 {
+                color: #0b1224;
+                font-size: 1.3rem;
+                font-weight: 800;
+                letter-spacing: 0.03em;
+            }
+
+            article img {
+                box-shadow: none;
+                border: 1px solid #cbd5f5;
+                width: 2.2in;
+                height: 2.2in;
+                padding: 0.18in;
+            }
+        }
         </style>
     </head>
     <body>

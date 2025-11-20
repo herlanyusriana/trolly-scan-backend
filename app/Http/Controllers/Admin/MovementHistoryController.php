@@ -27,7 +27,7 @@ class MovementHistoryController extends Controller
 
         $movements = (clone $query)
             ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
-            ->latest('checked_out_at')
+            ->orderByRaw('COALESCE(checked_in_at, checked_out_at, created_at) DESC')
             ->paginate(15)
             ->appends($activeFilters);
 
@@ -50,7 +50,7 @@ class MovementHistoryController extends Controller
         $filters = $this->validateFilters($request);
         $query = $this->buildQuery($filters)
             ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
-            ->latest('checked_out_at');
+            ->orderByRaw('COALESCE(checked_in_at, checked_out_at, created_at) DESC');
 
         $filename = 'trolley-history-' . now()->format('Ymd_His') . '.csv';
 
@@ -131,7 +131,7 @@ class MovementHistoryController extends Controller
 
         $movements = (clone $query)
             ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
-            ->latest('checked_out_at')
+            ->orderByRaw('COALESCE(checked_in_at, checked_out_at, created_at) DESC')
             ->paginate(15)
             ->appends($activeFilters);
 

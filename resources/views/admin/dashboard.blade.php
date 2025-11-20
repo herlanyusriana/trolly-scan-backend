@@ -43,8 +43,6 @@
                 <p class="mt-6 text-xs text-slate-500">Permintaan akun yang perlu ditinjau oleh admin.</p>
             </div>
         </div>
-    </div>
-
     <div class="mt-8 grid gap-6 lg:grid-cols-3">
         <div class="lg:col-span-2">
             <div class="rounded-3xl border border-slate-800 bg-slate-900/70 shadow-xl shadow-slate-950/20">
@@ -129,4 +127,5 @@
             </p>
         </div>
     </div>
+</div>
 @endsection

@@ -16,7 +16,7 @@
 
             @page {
                 size: A4 portrait;
-                margin: 10mm 8mm;
+                margin: 8mm 6mm;
             }
 
             body {
@@ -139,9 +139,9 @@
 
             @media print {
                 :root {
-                    --page-padding: 10mm;
-                    --card-padding: 7mm;
-                    --qr-size: 48mm;
+                    --page-padding: 6mm;
+                    --card-padding: 4mm;
+                    --qr-size: 34mm;
                 }
 
                 body {
@@ -167,8 +167,8 @@
                 }
 
                 .grid {
-                    grid-template-columns: repeat(4, minmax(0, 1fr));
-                    gap: 6mm;
+                    grid-template-columns: repeat(5, minmax(0, 1fr));
+                    gap: 4mm;
                 }
 
                 article {
@@ -182,7 +182,7 @@
 
                 article h2 {
                     color: #0b1224;
-                    font-size: 1.3rem;
+                    font-size: 1.05rem;
                     font-weight: 800;
                     letter-spacing: 0.03em;
                 }
@@ -192,7 +192,7 @@
                     border: 1px solid #cbd5f5;
                     width: var(--qr-size);
                     height: var(--qr-size);
-                    padding: 4mm;
+                    padding: 3mm;
                 }
             }
         </style>
@@ -231,7 +231,7 @@
         </main>
 
         <footer>
-            In-Out Trolley — dioptimalkan untuk cetak 6–8 QR per halaman.
+            In-Out Trolley — dioptimalkan untuk cetak 16–20 QR per halaman.
         </footer>
     </body>
 </html>

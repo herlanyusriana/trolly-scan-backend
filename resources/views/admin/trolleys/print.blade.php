@@ -8,9 +8,15 @@
             :root {
                 color-scheme: light;
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+                --page-width: 210mm;
                 --page-padding: 0.6in;
                 --card-padding: 0.85rem;
                 --qr-size: 170px;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 12mm 10mm;
             }
 
             body {
@@ -18,6 +24,15 @@
                 padding: 2rem 1.5rem;
                 background: #0f172a;
                 color: #e2e8f0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body > header,
+            body > main,
+            body > footer {
+                max-width: var(--page-width);
+                margin: 0 auto;
             }
 
             header {
@@ -123,10 +138,22 @@
             }
 
             @media print {
+                :root {
+                    --page-padding: 12mm;
+                    --card-padding: 9mm;
+                    --qr-size: 58mm;
+                }
+
                 body {
                     background: white;
                     color: black;
                     padding: var(--page-padding);
+                }
+
+                body > header,
+                body > main,
+                body > footer {
+                    max-width: 100%;
                 }
 
                 header, footer {
@@ -136,38 +163,38 @@
                 main {
                     border: none;
                     padding: 0;
-                background: transparent;
-            }
+                    background: transparent;
+                }
 
-            .grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.25in;
-            }
+                .grid {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 8mm;
+                }
 
-            article {
-                border: 1px solid #cbd5f5;
-                background: white;
-                box-shadow: none;
-                color: black;
-                padding: 0.5in 0.35in;
-                page-break-inside: avoid;
-            }
+                article {
+                    border: 1px solid #cbd5f5;
+                    background: white;
+                    box-shadow: none;
+                    color: black;
+                    padding: var(--card-padding);
+                    page-break-inside: avoid;
+                }
 
-            article h2 {
-                color: #0b1224;
-                font-size: 1.3rem;
-                font-weight: 800;
-                letter-spacing: 0.03em;
-            }
+                article h2 {
+                    color: #0b1224;
+                    font-size: 1.3rem;
+                    font-weight: 800;
+                    letter-spacing: 0.03em;
+                }
 
-            article img {
-                box-shadow: none;
-                border: 1px solid #cbd5f5;
-                width: 2.2in;
-                height: 2.2in;
-                padding: 0.18in;
+                article img {
+                    box-shadow: none;
+                    border: 1px solid #cbd5f5;
+                    width: var(--qr-size);
+                    height: var(--qr-size);
+                    padding: 4mm;
+                }
             }
-        }
         </style>
     </head>
     <body>

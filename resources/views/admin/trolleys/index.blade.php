@@ -4,6 +4,7 @@
         ->filter(fn ($trolley) => filled($trolley->qr_code_path))
         ->pluck('id')
         ->values();
+    $searchValue = $search ?? request('q');
 @endphp
 
 @extends('layouts.admin')
@@ -19,33 +20,36 @@
                 <p class="text-sm text-slate-500">Kelola troli dan cetak QR code secara massal tanpa boros kertas.</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                <button
-                    type="button"
-                    class="inline-flex items-center gap-2 rounded-2xl border border-slate-700 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 transition hover:bg-slate-800/80"
-                    x-on:click="toggleSelectAll"
-                    x-bind:class="allSelected ? 'border-blue-500/40 bg-blue-600/20 text-blue-100' : ''"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 9.75l7.5 7.5L21 7.5" />
-                    </svg>
-                    <span x-text="allSelected ? 'Batalkan Pilih Semua' : 'Pilih Semua QR'"></span>
-                </button>
+                <form action="{{ route('trolleys.index') }}" method="GET" class="flex flex-wrap items-center gap-2">
+                    <label class="sr-only" for="trolley-search">Cari troli</label>
+                    <input
+                        id="trolley-search"
+                        type="text"
+                        name="q"
+                        value="{{ $searchValue }}"
+                        placeholder="Cari kode / jenis / status..."
+                        class="w-56 rounded-2xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 shadow-inner focus:border-blue-500 focus:ring focus:ring-blue-500/30 sm:w-64"
+                    >
+                    <button
+                        type="submit"
+                        class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 10-10.607-10.607A7.5 7.5 0 0016.65 16.65z" />
+                        </svg>
+                        Cari Trolly
+                    </button>
+                    @if ($searchValue)
+                        <a
+                            href="{{ route('trolleys.index') }}"
+                            class="inline-flex items-center gap-1 rounded-2xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-800/80"
+                        >
+                            Reset
+                        </a>
+                    @endif
+                </form>
 
-                <a
-                    href="#"
-                    x-bind:href="printHref"
-                    x-bind:aria-disabled="selectedSize === 0"
-                    class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500 cursor-pointer"
-                    x-bind:class="selectedSize === 0 ? 'pointer-events-none opacity-40 hover:bg-emerald-600 cursor-not-allowed' : ''"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 7.5h12M9 7.5v-3h6v3m1.5 4.5h1.125c.621 0 1.125.504 1.125 1.125v6.75A1.125 1.125 0 0119.125 21H4.875A1.125 1.125 0 013.75 19.875v-6.75C3.75 12.504 4.254 12 4.875 12H6m12 0v-1.125A1.125 1.125 0 0016.875 9.75h-9.75A1.125 1.125 0 006 10.875V12m12 0H6" />
-                    </svg>
-                    Cetak QR
-                    <span x-show="selectedSize > 0" class="rounded-full bg-white/10 px-2 py-0.5 text-xs font-bold" x-text="selectedSize"></span>
-                </a>
-
-                <a href="{{ route('trolleys.create') }}" class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500">
+                <a href="{{ route('trolleys.create') }}" class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>

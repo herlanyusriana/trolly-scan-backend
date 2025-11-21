@@ -18,12 +18,26 @@ class TrolleyController extends Controller
     {
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $trolleys = Trolley::query()->orderBy('code')->paginate(15);
+        $search = trim((string) $request->query('q'));
+
+        $trolleys = Trolley::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($inner) use ($search) {
+                    $inner->where('code', 'like', "%{$search}%")
+                        ->orWhere('type', 'like', "%{$search}%")
+                        ->orWhere('kind', 'like', "%{$search}%")
+                        ->orWhere('status', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('code')
+            ->paginate(15)
+            ->withQueryString();
 
         return view('admin.trolleys.index', [
             'trolleys' => $trolleys,
+            'search' => $search,
         ]);
     }
 

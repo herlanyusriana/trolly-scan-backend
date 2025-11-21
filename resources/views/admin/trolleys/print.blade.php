@@ -16,7 +16,7 @@
 
             @page {
                 size: A4 portrait;
-                margin: 12mm 10mm;
+                margin: 10mm 8mm;
             }
 
             body {
@@ -139,9 +139,9 @@
 
             @media print {
                 :root {
-                    --page-padding: 12mm;
-                    --card-padding: 9mm;
-                    --qr-size: 58mm;
+                    --page-padding: 10mm;
+                    --card-padding: 7mm;
+                    --qr-size: 48mm;
                 }
 
                 body {
@@ -167,8 +167,8 @@
                 }
 
                 .grid {
-                    grid-template-columns: repeat(3, minmax(0, 1fr));
-                    gap: 8mm;
+                    grid-template-columns: repeat(4, minmax(0, 1fr));
+                    gap: 6mm;
                 }
 
                 article {

@@ -13,6 +13,9 @@ Route::prefix('v1')->group(function (): void {
     Route::post('auth/login', [AuthController::class, 'login']);
 
     Route::middleware('auth:mobile')->group(function (): void {
+        Route::get('movements', [TrolleyMovementController::class, 'index']);
+        Route::get('trolleys/movements', [TrolleyMovementController::class, 'index']);
+        Route::get('history', [TrolleyMovementController::class, 'index']);
         Route::get('trolleys', [TrolleyController::class, 'index']);
         Route::post('trolleys/{trolley}/checkout', [TrolleyMovementController::class, 'checkout']);
         Route::post('trolleys/{trolley}/checkin', [TrolleyMovementController::class, 'checkin']);

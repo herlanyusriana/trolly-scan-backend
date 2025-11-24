@@ -40,19 +40,19 @@
                     Cetak Semua
                 </a>
 
-                <a
-                    href="#"
-                    x-bind:href="printHref"
+                <button
+                    type="button"
+                    x-on:click="selectedSize > 0 && (window.location = printHref)"
                     x-bind:aria-disabled="selectedSize === 0"
-                    class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500 cursor-pointer"
-                    x-bind:class="selectedSize === 0 ? 'pointer-events-none opacity-40 hover:bg-emerald-600 cursor-not-allowed' : ''"
+                    class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500"
+                    x-bind:class="selectedSize === 0 ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 7.5h12M9 7.5v-3h6v3m1.5 4.5h1.125c.621 0 1.125.504 1.125 1.125v6.75A1.125 1.125 0 0119.125 21H4.875A1.125 1.125 0 013.75 19.875v-6.75C3.75 12.504 4.254 12 4.875 12H6m12 0v-1.125A1.125 1.125 0 0016.875 9.75h-9.75A1.125 1.125 0 006 10.875V12m12 0H6" />
                     </svg>
                     Cetak Terpilih
                     <span x-show="selectedSize > 0" class="rounded-full bg-white/10 px-2 py-0.5 text-xs font-bold" x-text="selectedSize"></span>
-                </a>
+                </button>
             </div>
         </div>
 

@@ -27,6 +27,27 @@ class DatabaseSeeder extends Seeder
         /** @var TrolleyQrCodeService $qrService */
         $qrService = app(TrolleyQrCodeService::class);
 
+        collect([
+            [
+                'name' => 'HMH Admin',
+                'email' => 'hmh@geumcheonindo.com',
+                'password' => 'gciindo1!',
+            ],
+            [
+                'name' => 'Herlan Admin',
+                'email' => 'herlan@geumcheonindo.com',
+                'password' => 'gciindo1!',
+            ],
+        ])->each(function (array $data) {
+            Admin::query()->firstOrCreate(
+                ['email' => $data['email']],
+                [
+                    'name' => $data['name'],
+                    'password' => $data['password'],
+                ],
+            );
+        });
+
         $trolleyA = Trolley::query()->create([
             'code' => 'BC-001',
             'type' => 'internal',

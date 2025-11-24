@@ -17,6 +17,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TrolleyMovementController extends Controller
 {
+    public function index(Request $request): AnonymousResourceCollection
+    {
+        $limit = (int) $request->query('limit', 50);
+        $limit = max(1, min(200, $limit));
+
+        $movements = TrolleyMovement::query()
+            ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
+            ->latest('checked_out_at')
+            ->limit($limit)
+            ->get();
+
+        return TrolleyMovementResource::collection($movements);
+    }
+
     public function checkout(Request $request, Trolley $trolley): JsonResponse
     {
         $data = $request->validate([

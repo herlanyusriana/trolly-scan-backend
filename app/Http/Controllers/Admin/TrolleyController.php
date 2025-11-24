@@ -21,16 +21,21 @@ class TrolleyController extends Controller
     public function index(Request $request): View
     {
         $search = trim((string) $request->query('q'));
+        $status = $request->query('status');
+
+        if (! in_array($status, ['in', 'out', null], true)) {
+            $status = null;
+        }
 
         $trolleys = Trolley::query()
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($inner) use ($search) {
                     $inner->where('code', 'like', "%{$search}%")
                         ->orWhere('type', 'like', "%{$search}%")
-                        ->orWhere('kind', 'like', "%{$search}%")
-                        ->orWhere('status', 'like', "%{$search}%");
+                        ->orWhere('kind', 'like', "%{$search}%");
                 });
             })
+            ->when($status, fn ($query) => $query->where('status', $status))
             ->orderBy('code')
             ->paginate(15)
             ->withQueryString();
@@ -38,6 +43,7 @@ class TrolleyController extends Controller
         return view('admin.trolleys.index', [
             'trolleys' => $trolleys,
             'search' => $search,
+            'status' => $status,
         ]);
     }
 

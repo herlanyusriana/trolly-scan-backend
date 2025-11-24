@@ -5,6 +5,7 @@
         ->pluck('id')
         ->values();
     $searchValue = $search ?? request('q');
+    $statusValue = $status ?? request('status');
 @endphp
 
 @extends('layouts.admin')
@@ -27,9 +28,19 @@
                         type="text"
                         name="q"
                         value="{{ $searchValue }}"
-                        placeholder="Cari kode / jenis / status..."
+                        placeholder="Cari kode / jenis..."
                         class="w-56 rounded-2xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 shadow-inner focus:border-blue-500 focus:ring focus:ring-blue-500/30 sm:w-64"
                     >
+                    <label class="sr-only" for="trolley-status">Status</label>
+                    <select
+                        id="trolley-status"
+                        name="status"
+                        class="w-36 rounded-2xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-blue-500 focus:ring focus:ring-blue-500/30"
+                    >
+                        <option value="" @selected($statusValue === null || $statusValue === '')>Semua Status</option>
+                        <option value="in" @selected($statusValue === 'in')>IN (Tersedia)</option>
+                        <option value="out" @selected($statusValue === 'out')>OUT (Sedang Digunakan)</option>
+                    </select>
                     <button
                         type="submit"
                         class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500"
@@ -39,7 +50,7 @@
                         </svg>
                         Cari Trolly
                     </button>
-                    @if ($searchValue)
+                    @if ($searchValue || $statusValue)
                         <a
                             href="{{ route('trolleys.index') }}"
                             class="inline-flex items-center gap-1 rounded-2xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-800/80"

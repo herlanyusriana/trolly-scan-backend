@@ -3,10 +3,9 @@
 namespace App\Services;
 
 use App\Models\Trolley;
-use chillerlan\QRCode\QRCode;
-use chillerlan\QRCode\QROptions;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TrolleyQrCodeService
 {
@@ -36,16 +35,11 @@ class TrolleyQrCodeService
             'generated_at' => now()->toIso8601String(),
         ], JSON_UNESCAPED_UNICODE);
 
-        $options = new QROptions([
-            'outputType' => QRCode::OUTPUT_IMAGE_PNG,
-            'scale' => 12,
-            'addQuietzone' => true,
-            'quietzoneSize' => 2,
-            'eccLevel' => QRCode::ECC_L,
-        ]);
-
-        $qrGenerator = new QRCode($options);
-        $qrImage = $qrGenerator->render($payload);
+        $qrImage = QrCode::format('png')
+            ->size(320)
+            ->margin(2)
+            ->errorCorrection('L')
+            ->generate($payload);
 
         $disk->put($path, $qrImage);
 

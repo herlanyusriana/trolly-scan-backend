@@ -11,33 +11,33 @@
     data-dashboard-url="{{ route('admin.dashboard.realtime') }}"
 >
         <div class="grid gap-4 lg:grid-cols-2">
-            <div class="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-900/60 via-emerald-900/40 to-slate-950/70 p-6 shadow-xl shadow-emerald-900/40">
-                <p class="text-xs uppercase tracking-wide text-emerald-100/80">Troli Masuk</p>
+            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30">
+                <p class="text-xs uppercase tracking-wide text-slate-300">Troli Masuk</p>
                 <div class="mt-4 flex items-end gap-3">
                 <span class="text-3xl font-semibold text-white" data-dashboard-in>{{ number_format($stats['trolleys']['in']) }}</span>
-                    <span class="rounded-full border border-emerald-400/50 bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-50">IN</span>
+                    <span class="rounded-full border border-slate-600 bg-slate-800/80 px-3 py-1 text-xs font-semibold text-slate-200">IN</span>
                 </div>
-                <p class="mt-6 text-xs text-emerald-100/70">Jumlah troli yang saat ini tersedia di area penyimpanan.</p>
+                <p class="mt-6 text-xs text-slate-400">Jumlah troli yang saat ini tersedia di area penyimpanan.</p>
             </div>
 
-            <div class="rounded-3xl border border-rose-500/40 bg-gradient-to-br from-rose-900/60 via-rose-900/40 to-slate-950/70 p-6 shadow-xl shadow-rose-900/40">
-                <p class="text-xs uppercase tracking-wide text-rose-100/80">Troli Keluar</p>
+            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30">
+                <p class="text-xs uppercase tracking-wide text-slate-300">Troli Keluar</p>
                 <div class="mt-4 flex items-end gap-3">
                 <span class="text-3xl font-semibold text-white" data-dashboard-out>{{ number_format($stats['trolleys']['out']) }}</span>
-                    <span class="rounded-full border border-rose-400/50 bg-rose-500/20 px-3 py-1 text-xs font-semibold text-rose-50">OUT</span>
+                    <span class="rounded-full border border-slate-600 bg-slate-800/80 px-3 py-1 text-xs font-semibold text-slate-200">OUT</span>
                 </div>
-                <p class="mt-4 text-xs text-rose-100/70">Troli yang sedang digunakan dan belum melakukan check-in.</p>
+                <p class="mt-4 text-xs text-slate-400">Troli yang sedang digunakan dan belum melakukan check-in.</p>
                 <div class="mt-5 grid gap-3 sm:grid-cols-3">
-                    <div class="rounded-2xl border border-blue-400/40 bg-blue-500/15 px-4 py-3 text-xs text-blue-50">
-                        <p class="font-semibold text-blue-50">Reinforce</p>
+                    <div class="rounded-2xl border border-slate-700 bg-slate-800/80 px-4 py-3 text-xs text-slate-100">
+                        <p class="font-semibold">Reinforce</p>
                         <p class="mt-1">Keluar: <span class="font-bold" data-dashboard-kind-out="reinforce">{{ number_format($stats['trolleys']['kinds_out']['reinforce']) }}</span></p>
                     </div>
-                    <div class="rounded-2xl border border-purple-400/40 bg-purple-500/15 px-4 py-3 text-xs text-purple-50">
-                        <p class="font-semibold text-purple-50">Backplate</p>
+                    <div class="rounded-2xl border border-slate-700 bg-slate-800/80 px-4 py-3 text-xs text-slate-100">
+                        <p class="font-semibold">Backplate</p>
                         <p class="mt-1">Keluar: <span class="font-bold" data-dashboard-kind-out="backplate">{{ number_format($stats['trolleys']['kinds_out']['backplate']) }}</span></p>
                     </div>
-                    <div class="rounded-2xl border border-cyan-400/40 bg-cyan-500/15 px-4 py-3 text-xs text-cyan-50">
-                        <p class="font-semibold text-cyan-50">CompBase</p>
+                    <div class="rounded-2xl border border-slate-700 bg-slate-800/80 px-4 py-3 text-xs text-slate-100">
+                        <p class="font-semibold">CompBase</p>
                         <p class="mt-1">Keluar: <span class="font-bold" data-dashboard-kind-out="compbase">{{ number_format($stats['trolleys']['kinds_out']['compbase']) }}</span></p>
                     </div>
                 </div>
@@ -45,13 +45,13 @@
         </div>
 
         <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
-            <div class="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-6 shadow-xl shadow-blue-900/30">
+            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">User Mobile Disetujui</p>
                 <div class="mt-4 text-3xl font-semibold text-white" data-dashboard-approved>{{ number_format($stats['mobile_users']['approved']) }}</div>
                 <p class="mt-6 text-xs text-slate-500">User aktif yang dapat mengakses aplikasi mobile.</p>
             </div>
 
-            <div class="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-6 shadow-xl shadow-amber-900/30">
+            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">Permintaan Menunggu</p>
                 <div class="mt-4 text-3xl font-semibold text-white" data-dashboard-pending>{{ number_format($stats['mobile_users']['pending']) }}</div>
                 <p class="mt-6 text-xs text-slate-500">Permintaan akun yang perlu ditinjau oleh admin.</p>

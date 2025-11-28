@@ -57,6 +57,15 @@
                         </svg>
                         Export CSV
                     </a>
+                    <a
+                        href="{{ route('admin.history.export.xlsx', $activeFilters) }}"
+                        class="inline-flex items-center gap-2 rounded-2xl border border-blue-500/40 px-4 py-2 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/10"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25L11.25 6m0 0L13.5 8.25M11.25 6v9m0 6.75c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z" />
+                        </svg>
+                        Export XLSX
+                    </a>
                 </div>
             </div>
 
@@ -125,7 +134,7 @@
             <div class="px-3 pb-4 sm:px-6">
                 <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
                     <div class="overflow-x-auto">
-                        <table class="w-full min-w-[960px] text-sm text-slate-200">
+                        <table class="w-full min-w-[900px] text-sm text-slate-200">
                             <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-400">
                                 <tr>
                                     <th class="px-4 py-3 text-left font-semibold">No. Urut</th>

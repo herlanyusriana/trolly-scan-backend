@@ -24,6 +24,7 @@ Route::middleware('auth:admin')->group(function (): void {
     Route::get('/dashboard/realtime', [DashboardController::class, 'realtime'])->name('admin.dashboard.realtime');
     Route::get('/history', [MovementHistoryController::class, 'index'])->name('admin.history.index');
     Route::get('/history/export', [MovementHistoryController::class, 'export'])->name('admin.history.export');
+    Route::get('/history/export/xlsx', [MovementHistoryController::class, 'exportXlsx'])->name('admin.history.export.xlsx');
     Route::get('/history/refresh', [MovementHistoryController::class, 'refresh'])->name('admin.history.refresh');
 
     Route::get('/approvals', [MobileUserApprovalController::class, 'index'])->name('admin.approvals.index');

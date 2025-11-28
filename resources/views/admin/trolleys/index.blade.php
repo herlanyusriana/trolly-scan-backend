@@ -90,7 +90,7 @@
         <div class="px-3 pb-4 sm:px-6">
             <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
                 <div class="overflow-x-auto">
-                    <table class="w-full min-w-[1100px] text-sm text-slate-300">
+                    <table class="w-full min-w-[1000px] text-sm text-slate-300">
                         <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                         <th class="px-4 py-3 text-left font-semibold">

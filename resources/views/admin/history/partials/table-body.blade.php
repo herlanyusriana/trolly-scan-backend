@@ -36,30 +36,30 @@
             : ($movement->return_location ?? $movement->destination ?? '—');
     @endphp
     <tr class="transition hover:bg-slate-900/60">
-        <td class="px-6 py-4 text-slate-300">
+        <td class="px-4 py-3 text-slate-300">
             {{ $isOutEvent && $movement->sequence_number ? str_pad((string) $movement->sequence_number, 2, '0', STR_PAD_LEFT) : '—' }}
         </td>
-        <td class="px-6 py-4 font-semibold text-white">{{ $movement->trolley?->code ?? '-' }}</td>
-        <td class="px-6 py-4 text-slate-300">{{ $movement->trolley?->type_label ?? '—' }}</td>
-        <td class="px-6 py-4 text-slate-300">{{ $movement->trolley?->kind_label ?? '—' }}</td>
-        <td class="px-6 py-4">
+        <td class="px-4 py-3 font-semibold text-white">{{ $movement->trolley?->code ?? '-' }}</td>
+        <td class="px-4 py-3 text-slate-300">{{ $movement->trolley?->type_label ?? '—' }}</td>
+        <td class="px-4 py-3 text-slate-300">{{ $movement->trolley?->kind_label ?? '—' }}</td>
+        <td class="px-4 py-3">
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $statusBadgeClasses }}">
                 {{ $statusLabel }}
             </span>
         </td>
-        <td class="px-6 py-4 text-slate-300">{{ $movement->mobileUser?->name ?? '—' }}</td>
-        <td class="px-6 py-4 text-slate-300">
+        <td class="px-4 py-3 text-slate-300">{{ $movement->mobileUser?->name ?? '—' }}</td>
+        <td class="px-4 py-3 text-slate-300">
             {{ $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '—' }}
         </td>
-        <td class="px-6 py-4 text-slate-300">
+        <td class="px-4 py-3 text-slate-300">
             {{ $movement->driver?->name ?? $movement->driver_snapshot ?? '—' }}
         </td>
-        <td class="px-6 py-4 text-slate-300">{{ $location }}</td>
-        <td class="px-6 py-4 text-slate-500">{{ $movement->notes ?? '—' }}</td>
-        <td class="px-6 py-4 text-slate-400">
+        <td class="px-4 py-3 text-slate-300">{{ $location }}</td>
+        <td class="px-4 py-3 text-slate-500">{{ $movement->notes ?? '—' }}</td>
+        <td class="px-4 py-3 text-slate-400">
             {{ $checkedOutAt ?? '—' }}
         </td>
-        <td class="px-6 py-4 text-slate-500">
+        <td class="px-4 py-3 text-slate-500">
             {{ $checkedInAt ?? '—' }}
         </td>
     </tr>

@@ -122,28 +122,32 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto px-3 pb-4 sm:px-6">
-                <table class="w-full text-sm text-slate-200">
-                    <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-400">
-                        <tr>
-                            <th class="px-6 py-3 text-left font-semibold">No. Urut</th>
-                            <th class="px-6 py-3 text-left font-semibold">Troli</th>
-                            <th class="px-6 py-3 text-left font-semibold">Jenis</th>
-                            <th class="px-6 py-3 text-left font-semibold">Tipe</th>
-                            <th class="px-6 py-3 text-left font-semibold">Status</th>
-                            <th class="px-6 py-3 text-left font-semibold">Operator</th>
-                            <th class="px-6 py-3 text-left font-semibold">Kendaraan</th>
-                            <th class="px-6 py-3 text-left font-semibold">Driver</th>
-                            <th class="px-6 py-3 text-left font-semibold">Tujuan / Lokasi</th>
-                            <th class="px-6 py-3 text-left font-semibold">Catatan</th>
-                            <th class="px-6 py-3 text-left font-semibold">Keluar</th>
-                            <th class="px-6 py-3 text-left font-semibold">Masuk</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800/70" data-history-table>
-                        @include('admin.history.partials.table-body', ['movements' => $movements])
-                    </tbody>
-                </table>
+            <div class="px-3 pb-4 sm:px-6">
+                <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[960px] text-sm text-slate-200">
+                            <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-400">
+                                <tr>
+                                    <th class="px-4 py-3 text-left font-semibold">No. Urut</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Troli</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Jenis</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Tipe</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Status</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Operator</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Kendaraan</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Driver</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Tujuan / Lokasi</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Catatan</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Keluar</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Masuk</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/70" data-history-table>
+                                @include('admin.history.partials.table-body', ['movements' => $movements])
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <div class="border-t border-slate-800/60 px-6 py-4" data-history-pagination>

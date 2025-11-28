@@ -87,24 +87,26 @@
             </div>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-slate-300">
-                <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-500">
+        <div class="px-3 pb-4 sm:px-6">
+            <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[1100px] text-sm text-slate-300">
+                        <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
-                        <th class="px-6 py-3 text-left font-semibold">
+                        <th class="px-4 py-3 text-left font-semibold">
                             <span class="sr-only">Pilih</span>
                         </th>
-                        <th class="px-6 py-3 text-left font-semibold">Kode</th>
-                        <th class="px-6 py-3 text-left font-semibold">Jenis (Internal/External)</th>
-                        <th class="px-6 py-3 text-left font-semibold">Tipe (Reinforce/Backplate/CompBase)</th>
-                        <th class="px-6 py-3 text-left font-semibold">Last Movement</th>
-                        <th class="px-6 py-3 text-left font-semibold">Durasi Status</th>
-                        <th class="px-6 py-3 text-left font-semibold">Status</th>
-                        <th class="px-6 py-3 text-left font-semibold">QR Code</th>
-                        <th class="px-6 py-3 text-right font-semibold">Aksi</th>
+                        <th class="px-4 py-3 text-left font-semibold">Kode</th>
+                        <th class="px-4 py-3 text-left font-semibold">Jenis (Internal/External)</th>
+                        <th class="px-4 py-3 text-left font-semibold">Tipe (Reinforce/Backplate/CompBase)</th>
+                        <th class="px-4 py-3 text-left font-semibold">Last Movement</th>
+                        <th class="px-4 py-3 text-left font-semibold">Durasi Status</th>
+                        <th class="px-4 py-3 text-left font-semibold">Status</th>
+                        <th class="px-4 py-3 text-left font-semibold">QR Code</th>
+                        <th class="px-4 py-3 text-right font-semibold">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/80">
+                        <tbody class="divide-y divide-slate-800/80">
                     @forelse($trolleys as $trolley)
                         @php
                             $statusClass = $trolley->status === 'out'
@@ -113,7 +115,7 @@
                             $hasQr = filled($trolley->qr_code_path);
                         @endphp
                         <tr class="hover:bg-slate-900/60 transition">
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3">
                                 @if ($hasQr)
                                     <label class="inline-flex items-center gap-2 text-xs text-slate-400">
                                         <input
@@ -130,10 +132,10 @@
                                     <span class="text-slate-700">-</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 font-medium text-white">{{ $trolley->code }}</td>
-                            <td class="px-6 py-4 text-slate-300">{{ \App\Models\Trolley::TYPE_LABELS[$trolley->type] ?? ucfirst($trolley->type) }}</td>
-                            <td class="px-6 py-4 text-slate-300">{{ \App\Models\Trolley::KIND_LABELS[$trolley->kind] ?? ucfirst($trolley->kind) }}</td>
-                            <td class="px-6 py-4 text-slate-300">
+                            <td class="px-4 py-3 font-medium text-white">{{ $trolley->code }}</td>
+                            <td class="px-4 py-3 text-slate-300">{{ \App\Models\Trolley::TYPE_LABELS[$trolley->type] ?? ucfirst($trolley->type) }}</td>
+                            <td class="px-4 py-3 text-slate-300">{{ \App\Models\Trolley::KIND_LABELS[$trolley->kind] ?? ucfirst($trolley->kind) }}</td>
+                            <td class="px-4 py-3 text-slate-300">
                                 @php
                                     $lastStatus = $trolley->last_movement_status;
                                     $lastAt = $trolley->last_movement_at;
@@ -147,7 +149,7 @@
                                     <span class="text-slate-600">-</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-slate-300">
+                            <td class="px-4 py-3 text-slate-300">
                                 @if ($trolley->status_duration_label)
                                     <div class="flex flex-col leading-tight">
                                         <span class="font-semibold text-white">{{ $trolley->status_duration_label }}</span>
@@ -159,12 +161,12 @@
                                     <span class="text-slate-600">-</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3">
                                 <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $statusClass }}">
                                     {{ strtoupper($trolley->status) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-slate-400">
+                            <td class="px-4 py-3 text-slate-400">
                                 @if ($hasQr)
                                     <a href="{{ asset('storage/' . $trolley->qr_code_path) }}" target="_blank" class="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200">
                                         Lihat
@@ -176,7 +178,7 @@
                                     <span class="text-slate-600">Belum tersedia</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-right text-slate-300">
+                            <td class="px-4 py-3 text-right text-slate-300">
                                 <div class="flex items-center justify-end gap-2">
                                     @if ($hasQr)
                                         <a href="{{ route('trolleys.print', ['ids' => $trolley->id]) }}" class="inline-flex items-center gap-1 rounded-full border border-blue-400/40 px-3 py-1.5 text-xs font-semibold text-blue-200 transition hover:bg-blue-500/10">

@@ -15,7 +15,7 @@
         x-data="qrSelection({ ids: @js($printableIds) })"
         class="rounded-3xl border border-slate-800 bg-slate-900/70 shadow-xl shadow-slate-950/20"
     >
-        <div class="flex flex-col gap-4 border-b border-slate-800 px-6 py-6 md:flex-row md:items-center md:justify-between">
+        <div class="flex flex-col gap-4 border-b border-slate-800 px-4 py-4 md:flex-row md:items-center md:justify-between sm:px-6">
             <div>
                 <h1 class="text-xl font-semibold text-white">Data Troli</h1>
                 <p class="text-sm text-slate-500">Kelola troli dan cetak QR code secara massal tanpa boros kertas.</p>
@@ -87,10 +87,10 @@
             </div>
         </div>
 
-        <div class="px-3 pb-4 sm:px-6">
+        <div class="px-3 pb-4 sm:px-5 md:px-6">
             <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
                 <div class="overflow-x-auto">
-                    <table class="w-full min-w-[1000px] text-sm text-slate-300">
+                    <table class="w-full min-w-[960px] text-sm text-slate-300">
                         <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                         <th class="px-4 py-3 text-left font-semibold">

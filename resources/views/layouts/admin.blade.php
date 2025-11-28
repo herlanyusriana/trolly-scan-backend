@@ -205,8 +205,8 @@
                         </div>
                     </header>
 
-                    <main class="flex-1 overflow-y-auto px-3 py-6 sm:px-6 lg:px-8">
-                        <div class="mx-auto flex w-full max-w-7xl flex-col gap-5">
+                    <main class="flex-1 overflow-y-auto px-3 py-5 sm:px-5 lg:px-8">
+                        <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
                             @if (session('status'))
                                 <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200 shadow">
                                     {{ session('status') }}

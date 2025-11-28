@@ -42,7 +42,7 @@
         </section>
 
         <section class="rounded-3xl border border-slate-800/70 bg-slate-900/70 shadow-xl shadow-slate-950/30">
-            <div class="flex flex-col gap-3 border-b border-slate-800/60 px-6 py-6 lg:flex-row lg:items-center lg:justify-between">
+            <div class="flex flex-col gap-3 border-b border-slate-800/60 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <h3 class="text-lg font-semibold text-white">Riwayat Pergerakan Troli</h3>
                     <p class="text-sm text-slate-400">Gunakan filter untuk memeriksa pergerakan tertentu dan ekspor sebagai CSV.</p>
@@ -69,8 +69,8 @@
                 </div>
             </div>
 
-            <div class="border-b border-slate-800/60 px-3 py-6 sm:px-6">
-                <div class="rounded-3xl border border-slate-800/70 bg-slate-900/50 p-4 shadow-inner shadow-slate-950/20 sm:p-6">
+            <div class="border-b border-slate-800/60 px-3 py-5 sm:px-5 md:px-6">
+                <div class="rounded-3xl border border-slate-800/70 bg-slate-900/50 p-4 shadow-inner shadow-slate-950/20 sm:p-5">
                     <form
                         method="GET"
                         action="{{ route('admin.history.index') }}"
@@ -131,7 +131,7 @@
                 </div>
             </div>
 
-            <div class="px-3 pb-4 sm:px-6">
+            <div class="px-3 pb-4 sm:px-5 md:px-6">
                 <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
                     <div class="overflow-x-auto">
                         <table class="w-full min-w-[900px] text-sm text-slate-200">

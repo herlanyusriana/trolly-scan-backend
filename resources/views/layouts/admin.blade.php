@@ -188,7 +188,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="mt-4 flex flex-wrap items-center gap-2 lg:hidden">
+                        <div class="mt-4 flex gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border border-slate-800/70 bg-slate-900/70 px-3 py-3 lg:hidden">
                             @foreach ($navigation as $item)
                                 @php
                                     $patterns = $item['active'] ?? [$item['route']];
@@ -205,8 +205,8 @@
                         </div>
                     </header>
 
-                    <main class="flex-1 overflow-y-auto px-3 py-8 sm:px-6">
-                        <div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
+                    <main class="flex-1 overflow-y-auto px-3 py-8 sm:px-6 lg:px-8">
+                        <div class="mx-auto flex w-full max-w-7xl flex-col gap-6">
                             @if (session('status'))
                                 <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200 shadow">
                                     {{ session('status') }}

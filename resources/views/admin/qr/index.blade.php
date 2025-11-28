@@ -86,9 +86,14 @@
                             >
                         </div>
                         <div class="flex items-center justify-between">
-                            <a href="{{ asset('storage/' . $trolley->qr_code_path) }}" target="_blank" class="text-xs font-semibold text-blue-300 hover:text-blue-200">
-                                Lihat / Unduh
-                            </a>
+                            <div class="flex items-center gap-3">
+                                <a href="{{ asset('storage/' . $trolley->qr_code_path) }}" target="_blank" class="text-xs font-semibold text-blue-300 hover:text-blue-200">
+                                    Lihat / Unduh
+                                </a>
+                                <a href="{{ route('trolleys.print', ['ids' => $trolley->id]) }}" class="text-xs font-semibold text-emerald-300 hover:text-emerald-200">
+                                    Cetak QR Ini
+                                </a>
+                            </div>
                             <span class="rounded-full bg-slate-800 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-slate-300">
                                 QR READY
                             </span>

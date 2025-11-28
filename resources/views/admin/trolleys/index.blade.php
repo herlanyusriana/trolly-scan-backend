@@ -132,6 +132,11 @@
                             </td>
                             <td class="px-6 py-4 text-right text-slate-300">
                                 <div class="flex items-center justify-end gap-2">
+                                    @if ($hasQr)
+                                        <a href="{{ route('trolleys.print', ['ids' => $trolley->id]) }}" class="inline-flex items-center gap-1 rounded-full border border-blue-400/40 px-3 py-1.5 text-xs font-semibold text-blue-200 transition hover:bg-blue-500/10">
+                                            Cetak QR
+                                        </a>
+                                    @endif
                                     <a href="{{ route('trolleys.edit', $trolley) }}" class="inline-flex items-center gap-1 rounded-full border border-amber-400/40 px-3 py-1.5 text-xs font-semibold text-amber-200 transition hover:bg-amber-500/10">
                                         Edit
                                     </a>

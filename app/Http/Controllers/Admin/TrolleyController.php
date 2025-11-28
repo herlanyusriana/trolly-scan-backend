@@ -7,7 +7,7 @@ use App\Models\Trolley;
 use App\Services\TrolleyQrCodeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
@@ -116,14 +116,9 @@ class TrolleyController extends Controller
             ->with('status', 'Troli berhasil dihapus.');
     }
 
-    public function print(Request $request): View|Response
+    public function print(Request $request): View|RedirectResponse
     {
-        $ids = collect(explode(',', (string) $request->query('ids')))
-            ->filter()
-            ->map(fn (string $value) => (int) $value)
-            ->filter()
-            ->unique()
-            ->values();
+        $ids = $this->resolvePrintableIds($request);
 
         $query = Trolley::query()->orderBy('code');
 
@@ -145,5 +140,27 @@ class TrolleyController extends Controller
             'trolleys' => $trolleys,
             'selectedCount' => $ids->isNotEmpty() ? $trolleys->count() : null,
         ]);
+    }
+
+    private function resolvePrintableIds(Request $request): Collection
+    {
+        $rawIds = collect();
+
+        $idsParam = $request->query('ids');
+        $singleIdParam = $request->query('id');
+
+        if ($idsParam !== null) {
+            $rawIds = $rawIds->merge(is_array($idsParam) ? $idsParam : explode(',', (string) $idsParam));
+        }
+
+        if ($singleIdParam !== null) {
+            $rawIds = $rawIds->merge(is_array($singleIdParam) ? $singleIdParam : [$singleIdParam]);
+        }
+
+        return $rawIds
+            ->map(fn ($value) => (int) $value)
+            ->filter(fn (int $value) => $value > 0)
+            ->unique()
+            ->values();
     }
 }

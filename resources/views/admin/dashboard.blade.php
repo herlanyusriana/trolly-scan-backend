@@ -11,34 +11,34 @@
     data-dashboard-url="{{ route('admin.dashboard.realtime') }}"
 >
         <div class="grid gap-4 lg:grid-cols-2">
-            <div class="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-xl shadow-emerald-900/30">
-                <p class="text-xs uppercase tracking-wide text-slate-400">Troli Masuk</p>
+            <div class="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-900/60 via-emerald-900/40 to-slate-950/70 p-6 shadow-xl shadow-emerald-900/40">
+                <p class="text-xs uppercase tracking-wide text-emerald-100/80">Troli Masuk</p>
                 <div class="mt-4 flex items-end gap-3">
                 <span class="text-3xl font-semibold text-white" data-dashboard-in>{{ number_format($stats['trolleys']['in']) }}</span>
-                    <span class="rounded-full border px-3 py-1 text-xs font-semibold {{ $statusPills['in'] }}">IN</span>
+                    <span class="rounded-full border border-emerald-400/50 bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-50">IN</span>
                 </div>
-                <p class="mt-6 text-xs text-slate-500">Jumlah troli yang saat ini tersedia di area penyimpanan.</p>
+                <p class="mt-6 text-xs text-emerald-100/70">Jumlah troli yang saat ini tersedia di area penyimpanan.</p>
             </div>
 
-            <div class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-6 shadow-xl shadow-rose-900/30">
-                <p class="text-xs uppercase tracking-wide text-slate-400">Troli Keluar</p>
+            <div class="rounded-3xl border border-rose-500/40 bg-gradient-to-br from-rose-900/60 via-rose-900/40 to-slate-950/70 p-6 shadow-xl shadow-rose-900/40">
+                <p class="text-xs uppercase tracking-wide text-rose-100/80">Troli Keluar</p>
                 <div class="mt-4 flex items-end gap-3">
                 <span class="text-3xl font-semibold text-white" data-dashboard-out>{{ number_format($stats['trolleys']['out']) }}</span>
-                    <span class="rounded-full border px-3 py-1 text-xs font-semibold {{ $statusPills['out'] }}">OUT</span>
+                    <span class="rounded-full border border-rose-400/50 bg-rose-500/20 px-3 py-1 text-xs font-semibold text-rose-50">OUT</span>
                 </div>
-                <p class="mt-6 text-xs text-slate-500">Troli yang sedang digunakan dan belum melakukan check-in.</p>
-                <div class="mt-5 grid gap-2 sm:grid-cols-3">
-                    <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 px-3 py-2 text-xs text-blue-50">
-                        <p class="font-semibold text-blue-100">Reinforce</p>
-                        <p>Keluar: <span class="font-bold" data-dashboard-kind-out="reinforce">{{ number_format($stats['trolleys']['kinds_out']['reinforce']) }}</span></p>
+                <p class="mt-4 text-xs text-rose-100/70">Troli yang sedang digunakan dan belum melakukan check-in.</p>
+                <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                    <div class="rounded-2xl border border-blue-400/40 bg-blue-500/15 px-4 py-3 text-xs text-blue-50">
+                        <p class="font-semibold text-blue-50">Reinforce</p>
+                        <p class="mt-1">Keluar: <span class="font-bold" data-dashboard-kind-out="reinforce">{{ number_format($stats['trolleys']['kinds_out']['reinforce']) }}</span></p>
                     </div>
-                    <div class="rounded-2xl border border-purple-500/30 bg-purple-500/10 px-3 py-2 text-xs text-purple-50">
-                        <p class="font-semibold text-purple-100">Backplate</p>
-                        <p>Keluar: <span class="font-bold" data-dashboard-kind-out="backplate">{{ number_format($stats['trolleys']['kinds_out']['backplate']) }}</span></p>
+                    <div class="rounded-2xl border border-purple-400/40 bg-purple-500/15 px-4 py-3 text-xs text-purple-50">
+                        <p class="font-semibold text-purple-50">Backplate</p>
+                        <p class="mt-1">Keluar: <span class="font-bold" data-dashboard-kind-out="backplate">{{ number_format($stats['trolleys']['kinds_out']['backplate']) }}</span></p>
                     </div>
-                    <div class="rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-xs text-cyan-50">
-                        <p class="font-semibold text-cyan-100">CompBase</p>
-                        <p>Keluar: <span class="font-bold" data-dashboard-kind-out="compbase">{{ number_format($stats['trolleys']['kinds_out']['compbase']) }}</span></p>
+                    <div class="rounded-2xl border border-cyan-400/40 bg-cyan-500/15 px-4 py-3 text-xs text-cyan-50">
+                        <p class="font-semibold text-cyan-50">CompBase</p>
+                        <p class="mt-1">Keluar: <span class="font-bold" data-dashboard-kind-out="compbase">{{ number_format($stats['trolleys']['kinds_out']['compbase']) }}</span></p>
                     </div>
                 </div>
             </div>

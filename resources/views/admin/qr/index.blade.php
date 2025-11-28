@@ -41,9 +41,10 @@
                 </a>
 
                 <a
-                    :href="selectedSize > 0 ? printHref : '#'"
+                    href="{{ route('trolleys.print') }}"
+                    :href="selectedSize > 0 ? printHref : '{{ route('trolleys.print') }}'"
                     :aria-disabled="selectedSize === 0"
-                    @click.prevent="selectedSize > 0 ? (window.location.href = printHref) : null"
+                    @click.prevent="selectedSize > 0 ? (window.location.href = printHref) : (window.location.href = '{{ route('trolleys.print') }}')"
                     class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition"
                     :class="selectedSize === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-emerald-500 cursor-pointer'"
                 >

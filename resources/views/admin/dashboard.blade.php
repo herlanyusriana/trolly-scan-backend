@@ -10,36 +10,6 @@
     data-dashboard-realtime
     data-dashboard-url="{{ route('admin.dashboard.realtime') }}"
 >
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <div class="rounded-3xl border border-blue-500/40 bg-gradient-to-br from-blue-900/60 via-blue-900/40 to-slate-950/70 p-6 shadow-xl shadow-blue-900/40">
-                <p class="text-xs uppercase tracking-wide text-blue-200/80">Reinforce</p>
-                <span class="mt-4 block text-3xl font-semibold text-white" data-dashboard-kind="reinforce">{{ number_format($stats['trolleys']['kinds']['reinforce']) }}</span>
-                <p class="mt-2 text-xs text-blue-100/70">Troli dengan struktur reinforce yang tercatat.</p>
-                <p class="mt-3 text-xs text-blue-100/70">
-                    Sedang di luar lokasi:
-                    <span class="font-semibold text-blue-50" data-dashboard-kind-out="reinforce">{{ number_format($stats['trolleys']['kinds_out']['reinforce']) }}</span>
-                </p>
-            </div>
-            <div class="rounded-3xl border border-purple-500/40 bg-gradient-to-br from-purple-900/60 via-purple-900/40 to-slate-950/70 p-6 shadow-xl shadow-purple-900/40">
-                <p class="text-xs uppercase tracking-wide text-purple-200/80">Backplate</p>
-                <span class="mt-4 block text-3xl font-semibold text-white" data-dashboard-kind="backplate">{{ number_format($stats['trolleys']['kinds']['backplate']) }}</span>
-                <p class="mt-2 text-xs text-purple-100/70">Troli jenis backplate yang tersedia.</p>
-                <p class="mt-3 text-xs text-purple-100/70">
-                    Sedang di luar lokasi:
-                    <span class="font-semibold text-purple-50" data-dashboard-kind-out="backplate">{{ number_format($stats['trolleys']['kinds_out']['backplate']) }}</span>
-                </p>
-            </div>
-            <div class="rounded-3xl border border-cyan-500/40 bg-gradient-to-br from-cyan-900/60 via-cyan-900/40 to-slate-950/70 p-6 shadow-xl shadow-cyan-900/40">
-                <p class="text-xs uppercase tracking-wide text-cyan-200/80">CompBase</p>
-                <span class="mt-4 block text-3xl font-semibold text-white" data-dashboard-kind="compbase">{{ number_format($stats['trolleys']['kinds']['compbase']) }}</span>
-                <p class="mt-2 text-xs text-cyan-100/70">Troli tipe compbase yang terdaftar.</p>
-                <p class="mt-3 text-xs text-cyan-100/70">
-                    Sedang di luar lokasi:
-                    <span class="font-semibold text-cyan-50" data-dashboard-kind-out="compbase">{{ number_format($stats['trolleys']['kinds_out']['compbase']) }}</span>
-                </p>
-            </div>
-        </div>
-
         <div class="grid gap-4 lg:grid-cols-2">
             <div class="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-xl shadow-emerald-900/30">
                 <p class="text-xs uppercase tracking-wide text-slate-400">Troli Masuk</p>

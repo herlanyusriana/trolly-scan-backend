@@ -21,6 +21,24 @@
                 <p class="text-sm text-slate-500">Kelola troli dan cetak QR code secara massal tanpa boros kertas.</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
+                <a
+                    href="{{ route('trolleys.export', ['q' => $searchValue, 'status' => $statusValue]) }}"
+                    class="inline-flex items-center gap-2 rounded-2xl border border-emerald-500/40 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-500/10"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v12m0 0l3.75-3.75M12 16.5l-3.75-3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5z" />
+                    </svg>
+                    Export CSV
+                </a>
+                <a
+                    href="{{ route('trolleys.export.xlsx', ['q' => $searchValue, 'status' => $statusValue]) }}"
+                    class="inline-flex items-center gap-2 rounded-2xl border border-blue-500/40 px-4 py-2 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/10"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25L11.25 6m0 0L13.5 8.25M11.25 6v9m0 6.75c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z" />
+                    </svg>
+                    Export XLSX
+                </a>
                 <form action="{{ route('trolleys.index') }}" method="GET" class="flex flex-wrap items-center gap-2">
                     <label class="sr-only" for="trolley-search">Cari troli</label>
                     <input
@@ -79,6 +97,8 @@
                         <th class="px-6 py-3 text-left font-semibold">Kode</th>
                         <th class="px-6 py-3 text-left font-semibold">Jenis (Internal/External)</th>
                         <th class="px-6 py-3 text-left font-semibold">Tipe (Reinforce/Backplate/CompBase)</th>
+                        <th class="px-6 py-3 text-left font-semibold">Last Movement</th>
+                        <th class="px-6 py-3 text-left font-semibold">Durasi Status</th>
                         <th class="px-6 py-3 text-left font-semibold">Status</th>
                         <th class="px-6 py-3 text-left font-semibold">QR Code</th>
                         <th class="px-6 py-3 text-right font-semibold">Aksi</th>
@@ -113,6 +133,32 @@
                             <td class="px-6 py-4 font-medium text-white">{{ $trolley->code }}</td>
                             <td class="px-6 py-4 text-slate-300">{{ \App\Models\Trolley::TYPE_LABELS[$trolley->type] ?? ucfirst($trolley->type) }}</td>
                             <td class="px-6 py-4 text-slate-300">{{ \App\Models\Trolley::KIND_LABELS[$trolley->kind] ?? ucfirst($trolley->kind) }}</td>
+                            <td class="px-6 py-4 text-slate-300">
+                                @php
+                                    $lastStatus = $trolley->last_movement_status;
+                                    $lastAt = $trolley->last_movement_at;
+                                @endphp
+                                @if ($lastStatus && $lastAt)
+                                    <div class="flex flex-col leading-tight">
+                                        <span class="font-semibold text-white">{{ strtoupper($lastStatus) }}</span>
+                                        <span class="text-xs text-slate-500">{{ $lastAt->format('d M Y H:i') }}</span>
+                                    </div>
+                                @else
+                                    <span class="text-slate-600">-</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-slate-300">
+                                @if ($trolley->status_duration_label)
+                                    <div class="flex flex-col leading-tight">
+                                        <span class="font-semibold text-white">{{ $trolley->status_duration_label }}</span>
+                                        @if ($trolley->status_since)
+                                            <span class="text-xs text-slate-500">Sejak {{ $trolley->status_since->format('d M Y H:i') }}</span>
+                                        @endif
+                                    </div>
+                                @else
+                                    <span class="text-slate-600">-</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $statusClass }}">
                                     {{ strtoupper($trolley->status) }}

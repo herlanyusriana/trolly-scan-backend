@@ -32,6 +32,8 @@ Route::middleware('auth:admin')->group(function (): void {
     Route::post('/approvals/{mobileUser}/reject', [MobileUserApprovalController::class, 'reject'])->name('admin.approvals.reject');
 
     Route::get('/trolleys/print', [TrolleyController::class, 'print'])->name('trolleys.print');
+    Route::get('/trolleys/export', [TrolleyController::class, 'export'])->name('trolleys.export');
+    Route::get('/trolleys/export/xlsx', [TrolleyController::class, 'exportXlsx'])->name('trolleys.export.xlsx');
     Route::get('/qr-codes', [QrController::class, 'index'])->name('trolleys.qr.index');
     Route::resource('trolleys', TrolleyController::class)->except(['show']);
     Route::resource('vehicles', VehicleController::class)->except(['show']);

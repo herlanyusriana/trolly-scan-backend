@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 class Trolley extends Model
 {
@@ -54,6 +56,11 @@ class Trolley extends Model
         return $this->hasMany(TrolleyMovement::class);
     }
 
+    public function latestMovement(): HasOne
+    {
+        return $this->hasOne(TrolleyMovement::class)->latestOfMany();
+    }
+
     public function activeMovements(): HasMany
     {
         return $this->movements()->where('status', 'out');
@@ -67,5 +74,61 @@ class Trolley extends Model
     public function getKindLabelAttribute(): string
     {
         return self::KIND_LABELS[$this->kind] ?? ucfirst($this->kind);
+    }
+
+    public function getStatusSinceAttribute(): ?Carbon
+    {
+        $movement = $this->latestMovement;
+
+        if (! $movement) {
+            return null;
+        }
+
+        return $movement->status === 'out'
+            ? ($movement->checked_out_at ?? $movement->created_at)
+            : ($movement->checked_in_at ?? $movement->created_at);
+    }
+
+    public function getLastMovementAtAttribute(): ?Carbon
+    {
+        $movement = $this->latestMovement;
+
+        if (! $movement) {
+            return null;
+        }
+
+        return $movement->status === 'out'
+            ? ($movement->checked_out_at ?? $movement->created_at)
+            : ($movement->checked_in_at ?? $movement->checked_out_at ?? $movement->created_at);
+    }
+
+    public function getLastMovementStatusAttribute(): ?string
+    {
+        return $this->latestMovement?->status;
+    }
+
+    public function getStatusDurationLabelAttribute(): ?string
+    {
+        $since = $this->status_since;
+
+        if (! $since) {
+            return null;
+        }
+
+        $diff = $since->diffInSeconds(now());
+
+        $days = intdiv($diff, 86400);
+        $hours = intdiv($diff % 86400, 3600);
+        $minutes = intdiv($diff % 3600, 60);
+
+        $parts = [];
+
+        if ($days > 0) {
+            $parts[] = $days . ' day' . ($days !== 1 ? 's' : '');
+        }
+
+        $parts[] = sprintf('%02dh %02dm', $hours, $minutes);
+
+        return implode(' ', $parts);
     }
 }

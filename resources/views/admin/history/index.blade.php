@@ -138,8 +138,7 @@
                                     <th class="px-4 py-3 text-left font-semibold">Driver</th>
                                     <th class="px-4 py-3 text-left font-semibold">Tujuan / Lokasi</th>
                                     <th class="px-4 py-3 text-left font-semibold">Catatan</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Keluar</th>
-                                    <th class="px-4 py-3 text-left font-semibold">Masuk</th>
+                                    <th class="px-4 py-3 text-left font-semibold">Waktu</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-800/70" data-history-table>

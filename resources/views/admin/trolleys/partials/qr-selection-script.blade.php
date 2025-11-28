@@ -1,6 +1,6 @@
 @once
-    @push('scripts')
-        <script type="module">
+    <script>
+        (() => {
             const initQrSelection = () => {
                 window.qrSelection = ({ ids = [] } = {}) => {
                     const normalizeIds = (values) => {
@@ -71,15 +71,11 @@
                 };
             };
 
-            // Pastikan tersedia sebelum Alpine mem-parse x-data
-            document.addEventListener('alpine:init', () => {
-                initQrSelection();
-            });
-
-            // Backup jika Alpine sudah jalan lebih dulu
             if (typeof window.qrSelection !== 'function') {
                 initQrSelection();
             }
-        </script>
-    @endpush
+
+            document.addEventListener('alpine:init', initQrSelection);
+        })();
+    </script>
 @endonce

@@ -204,9 +204,11 @@ class MovementHistoryController extends Controller
             'date_from' => ['nullable', 'date'],
             'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
             'sequence_number' => ['nullable', 'integer', 'min:1'],
+            'status' => ['nullable', 'in:in,out'],
+            'duration' => ['nullable', 'in:less_than_3,between_3_and_6,more_than_6,more_than_3'],
         ]);
 
-        if (! filled($filters['date_from'] ?? null) && ! filled($filters['date_to'] ?? null)) {
+        if (! filled($filters['date_from'] ?? null) && ! filled($filters['date_to'] ?? null) && ! filled($filters['duration'] ?? null)) {
             $filters['date_from'] = now()->subDays(7)->toDateString();
         }
 
@@ -230,6 +232,27 @@ class MovementHistoryController extends Controller
 
         if ($sequence = Arr::get($filters, 'sequence_number')) {
             $query->where('sequence_number', (int) $sequence);
+        }
+
+        if ($status = Arr::get($filters, 'status')) {
+            $query->where('status', $status);
+        }
+
+        if ($duration = Arr::get($filters, 'duration')) {
+            $query->where('status', 'out')->whereNull('checked_in_at');
+            
+            $now = now();
+            
+            match($duration) {
+                'less_than_3' => $query->where('checked_out_at', '>', $now->copy()->subDays(3)),
+                'between_3_and_6' => $query->whereBetween('checked_out_at', [
+                    $now->copy()->subDays(6),
+                    $now->copy()->subDays(3)
+                ]),
+                'more_than_6' => $query->where('checked_out_at', '<=', $now->copy()->subDays(6)),
+                'more_than_3' => $query->where('checked_out_at', '<=', $now->copy()->subDays(3)),
+                default => null
+            };
         }
 
         return $query;

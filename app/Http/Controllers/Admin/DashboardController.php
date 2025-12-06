@@ -44,6 +44,7 @@ class DashboardController extends Controller
                 'pending' => $stats['mobile_users']['pending'],
                 'kinds' => $stats['trolleys']['kinds'],
                 'kinds_out' => $stats['trolleys']['kinds_out'],
+                'duration_categories' => $stats['trolleys']['duration_categories'],
             ],
             'table' => view('admin.dashboard.partials.recent-rows', [
                 'recentMovements' => $recentMovements,
@@ -72,6 +73,28 @@ class DashboardController extends Controller
         }
 
         $threeDaysAgo = now()->subDays(3);
+        $sixDaysAgo = now()->subDays(6);
+        
+        // Count by duration categories
+        $lessThan3Days = TrolleyMovement::query()
+            ->where('status', 'out')
+            ->where('checked_out_at', '>', $threeDaysAgo)
+            ->whereNull('checked_in_at')
+            ->count();
+            
+        $between3And6Days = TrolleyMovement::query()
+            ->where('status', 'out')
+            ->where('checked_out_at', '<=', $threeDaysAgo)
+            ->where('checked_out_at', '>', $sixDaysAgo)
+            ->whereNull('checked_in_at')
+            ->count();
+            
+        $moreThan6Days = TrolleyMovement::query()
+            ->where('status', 'out')
+            ->where('checked_out_at', '<=', $sixDaysAgo)
+            ->whereNull('checked_in_at')
+            ->count();
+        
         $overdueCount = TrolleyMovement::query()
             ->where('status', 'out')
             ->where('checked_out_at', '<=', $threeDaysAgo)
@@ -98,6 +121,11 @@ class DashboardController extends Controller
                 'in' => Trolley::query()->where('status', 'in')->count(),
                 'out' => Trolley::query()->where('status', 'out')->count(),
                 'overdue' => $overdueCount,
+                'duration_categories' => [
+                    'less_than_3' => $lessThan3Days,
+                    'between_3_and_6' => $between3And6Days,
+                    'more_than_6' => $moreThan6Days,
+                ],
             ],
         ];
     }

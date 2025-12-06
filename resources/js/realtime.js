@@ -26,6 +26,9 @@ const initDashboardRealtime = () => {
     const elOverdue = root.querySelector('[data-dashboard-overdue]');
     const elApproved = root.querySelector('[data-dashboard-approved]');
     const elPending = root.querySelector('[data-dashboard-pending]');
+    const elLess3 = root.querySelector('[data-dashboard-less-3]');
+    const el36 = root.querySelector('[data-dashboard-3-6]');
+    const elMore6 = root.querySelector('[data-dashboard-more-6]');
     const kindEls = root.querySelectorAll('[data-dashboard-kind]');
     const kindOutEls = root.querySelectorAll('[data-dashboard-kind-out]');
     const tableEl = root.querySelector('[data-dashboard-table]');
@@ -37,6 +40,11 @@ const initDashboardRealtime = () => {
         if (elOverdue) elOverdue.textContent = Number(stats.overdue ?? 0).toLocaleString('id-ID');
         if (elApproved) elApproved.textContent = Number(stats.approved ?? 0).toLocaleString('id-ID');
         if (elPending) elPending.textContent = Number(stats.pending ?? 0).toLocaleString('id-ID');
+        if (stats.duration_categories) {
+            if (elLess3) elLess3.textContent = Number(stats.duration_categories.less_than_3 ?? 0).toLocaleString('id-ID');
+            if (el36) el36.textContent = Number(stats.duration_categories.between_3_and_6 ?? 0).toLocaleString('id-ID');
+            if (elMore6) elMore6.textContent = Number(stats.duration_categories.more_than_6 ?? 0).toLocaleString('id-ID');
+        }
         if (stats.kinds) {
             kindEls.forEach((el) => {
                 const kindKey = el.dataset.dashboardKind;

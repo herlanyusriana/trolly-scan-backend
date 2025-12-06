@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\DurationCategoryExport;
 use App\Http\Controllers\Controller;
 use App\Models\TrolleyMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DurationCategoryController extends Controller
@@ -131,6 +134,20 @@ class DurationCategoryController extends Controller
         }, $filename, [
             'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
+    }
+
+    public function exportXlsx(Request $request): BinaryFileResponse
+    {
+        $category = $request->input('category', 'less_than_3');
+        
+        $query = $this->buildQuery($category)
+            ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
+            ->orderBy('checked_out_at', 'asc');
+        
+        $movements = $query->get();
+        $filename = 'trolley-' . $category . '-' . now()->format('Ymd_His') . '.xlsx';
+        
+        return Excel::download(new DurationCategoryExport($movements), $filename);
     }
     
     protected function buildQuery(string $category)

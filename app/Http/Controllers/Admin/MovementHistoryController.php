@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\MovementHistoryExport;
 use App\Http\Controllers\Controller;
 use App\Models\TrolleyMovement;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Response;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use ZipArchive;
 
@@ -131,6 +134,19 @@ class MovementHistoryController extends Controller
         }, $filename, [
             'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
+    }
+
+    public function exportXlsx(Request $request): BinaryFileResponse
+    {
+        $filters = $this->validateFilters($request);
+        $query = $this->buildQuery($filters)
+            ->with(['trolley', 'mobileUser', 'vehicle', 'driver'])
+            ->orderByRaw('COALESCE(checked_in_at, checked_out_at, created_at) DESC');
+
+        $movements = $query->get();
+        $filename = 'trolley-history-' . now()->format('Ymd_His') . '.xlsx';
+
+        return Excel::download(new MovementHistoryExport($movements), $filename);
     }
 
     public function refresh(Request $request): JsonResponse

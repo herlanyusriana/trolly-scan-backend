@@ -26,6 +26,7 @@ Route::middleware('auth:admin')->group(function (): void {
     
     Route::get('/duration-category', [DurationCategoryController::class, 'index'])->name('admin.duration-category.index');
     Route::get('/duration-category/export', [DurationCategoryController::class, 'export'])->name('admin.duration-category.export');
+    Route::get('/duration-category/export/xlsx', [DurationCategoryController::class, 'exportXlsx'])->name('admin.duration-category.export.xlsx');
     
     Route::get('/history', [MovementHistoryController::class, 'index'])->name('admin.history.index');
     Route::get('/history/export', [MovementHistoryController::class, 'export'])->name('admin.history.export');

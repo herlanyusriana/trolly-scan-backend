@@ -80,24 +80,28 @@
         <td class="px-4 py-3 text-slate-300">
             {{ $seqNum !== 'no_seq' ? str_pad((string) $seqNum, 2, '0', STR_PAD_LEFT) : '—' }}
         </td>
-        <td class="px-4 py-3 font-semibold text-white">
-            <div class="flex flex-wrap gap-1">
-                @foreach($trolleyCodes as $code)
-                    <span class="inline-block rounded border border-slate-700 bg-slate-800/50 px-2 py-0.5 font-mono text-xs">{{ $code }}</span>
-                @endforeach
-                @if(empty($trolleyCodes))
-                    <span class="text-slate-500">—</span>
+        <td class="px-4 py-3">
+            <div class="max-w-xs">
+                <div class="font-mono text-xs font-semibold text-white">
+                    @if(!empty($trolleyCodes))
+                        {{ implode(', ', $trolleyCodes) }}
+                    @else
+                        <span class="text-slate-500">—</span>
+                    @endif
+                </div>
+                @if(count($trolleyCodes) > 1)
+                    <div class="mt-0.5 text-xs text-slate-500">{{ count($trolleyCodes) }} troli</div>
                 @endif
             </div>
         </td>
-        <td class="px-4 py-3 text-slate-300">
+        <td class="px-4 py-3 text-slate-300 text-xs">
             @if(!empty($trolleyTypes))
                 {{ implode(', ', $trolleyTypes) }}
             @else
                 —
             @endif
         </td>
-        <td class="px-4 py-3 text-slate-300">
+        <td class="px-4 py-3 text-slate-300 text-xs">
             @if(!empty($trolleyKinds))
                 {{ implode(', ', $trolleyKinds) }}
             @else

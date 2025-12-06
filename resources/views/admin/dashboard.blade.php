@@ -112,12 +112,26 @@
         </div>
     @if($overdueMovements->isNotEmpty())
     <div class="rounded-3xl border border-orange-800/70 bg-gradient-to-br from-orange-900/30 to-slate-900/70 shadow-xl shadow-orange-950/20">
-        <div class="flex items-center justify-between border-b border-orange-800/50 px-6 py-5">
+        <div class="flex flex-col gap-4 border-b border-orange-800/50 px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
                 <h2 class="text-lg font-semibold text-white">⚠️ Troli Terlambat (OUT &gt; 3 Hari)</h2>
                 <p class="mt-1 text-xs text-orange-300/80">Troli yang perlu segera dikembalikan</p>
             </div>
-            <a href="{{ route('admin.history.index') }}?duration=more_than_3" class="rounded-full border border-orange-400/40 bg-orange-500/20 px-4 py-2 text-sm font-bold text-orange-200 transition hover:bg-orange-500/30">{{ $overdueMovements->count() }} Troli →</a>
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="{{ route('admin.history.export', ['duration' => 'more_than_3']) }}" class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-3-6L12 15m0 0L6 10.5M12 15V3" />
+                    </svg>
+                    Export CSV
+                </a>
+                <a href="{{ route('admin.history.export.xlsx', ['duration' => 'more_than_3']) }}" class="inline-flex items-center gap-2 rounded-2xl border border-blue-500/40 px-4 py-2 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25L11.25 6m0 0L13.5 8.25M11.25 6v9m0 6.75c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z" />
+                    </svg>
+                    Export XLSX
+                </a>
+                <a href="{{ route('admin.history.index') }}?duration=more_than_3" class="rounded-full border border-orange-400/40 bg-orange-500/20 px-4 py-2 text-sm font-bold text-orange-200 transition hover:bg-orange-500/30">{{ $overdueMovements->count() }} Troli →</a>
+            </div>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-slate-300">

@@ -3,10 +3,27 @@
     $dateFrom = $filters['date_from'] ?? null;
     $dateTo = $filters['date_to'] ?? null;
     $sequenceNumber = $filters['sequence_number'] ?? null;
+    $statusFilter = $filters['status'] ?? null;
+    $durationFilter = $filters['duration'] ?? null;
     $activeFilters = $activeFilters ?? array_filter(
         $filters,
         fn ($value) => $value !== null && $value !== ''
     );
+    
+    // Duration filter labels
+    $durationLabels = [
+        'less_than_3' => '✅ Kurang dari 3 Hari',
+        'between_3_and_6' => '⚠️ Antara 3-6 Hari',
+        'more_than_6' => '🚨 Lebih dari 6 Hari',
+        'more_than_3' => '⚠️ Lebih dari 3 Hari',
+    ];
+    
+    $durationColors = [
+        'less_than_3' => 'border-emerald-500/60 bg-emerald-500/20 text-emerald-200',
+        'between_3_and_6' => 'border-amber-500/60 bg-amber-500/20 text-amber-200',
+        'more_than_6' => 'border-rose-500/60 bg-rose-500/20 text-rose-200',
+        'more_than_3' => 'border-orange-500/60 bg-orange-500/20 text-orange-200',
+    ];
 @endphp
 
 @extends('layouts.admin')
@@ -22,6 +39,23 @@
             <p class="mt-1 text-sm text-slate-400">
                 Rekap pergerakan troli sesuai filter yang diterapkan.
             </p>
+            
+            @if($durationFilter || $statusFilter)
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                    <span class="text-xs text-slate-500">Filter Aktif:</span>
+                    @if($durationFilter && isset($durationLabels[$durationFilter]))
+                        <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold {{ $durationColors[$durationFilter] ?? 'border-slate-600 bg-slate-800 text-slate-200' }}">
+                            {{ $durationLabels[$durationFilter] }}
+                        </span>
+                    @endif
+                    @if($statusFilter)
+                        <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold {{ $statusFilter === 'out' ? 'border-blue-500/60 bg-blue-500/20 text-blue-200' : 'border-emerald-500/60 bg-emerald-500/20 text-emerald-200' }}">
+                            Status: {{ strtoupper($statusFilter) }}
+                        </span>
+                    @endif
+                </div>
+            @endif
+            
             <div class="mt-4 grid gap-4 sm:grid-cols-3">
                 <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-5 shadow-lg shadow-slate-950/30">
                     <p class="text-xs uppercase tracking-wide text-slate-400">Total Event</p>

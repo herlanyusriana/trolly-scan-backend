@@ -1,30 +1,35 @@
 @php
-    $eventRows = [];
+    // Group movements by sequence_number
+    $groupedMovements = [];
     foreach ($movements as $movement) {
-        $eventRows[] = ['movement' => $movement];
+        $seqNum = $movement->sequence_number ?? 'no_seq';
+        if (!isset($groupedMovements[$seqNum])) {
+            $groupedMovements[$seqNum] = [];
+        }
+        $groupedMovements[$seqNum][] = $movement;
     }
 
-    // Sort newest first by checked_out_at fallback created_at
-    usort($eventRows, static function (array $a, array $b): int {
-        $aTime = optional($a['movement']->checked_out_at ?? $a['movement']->created_at)->getTimestamp();
-        $bTime = optional($b['movement']->checked_out_at ?? $b['movement']->created_at)->getTimestamp();
+    // Sort groups by newest first
+    uasort($groupedMovements, static function (array $a, array $b): int {
+        $aTime = optional($a[0]->checked_out_at ?? $a[0]->created_at)->getTimestamp();
+        $bTime = optional($b[0]->checked_out_at ?? $b[0]->created_at)->getTimestamp();
         return ($bTime ?? 0) <=> ($aTime ?? 0);
     });
 @endphp
 
-@forelse ($eventRows as $event)
+@forelse ($groupedMovements as $seqNum => $groupMovements)
     @php
-        /** @var \App\Models\TrolleyMovement $movement */
-        $movement = $event['movement'];
+        /** @var \App\Models\TrolleyMovement $firstMovement */
+        $firstMovement = $groupMovements[0];
         
-        // Calculate duration in days for OUT status
+        // Calculate duration in days for OUT status (use first movement)
         $durationDays = 0;
         $rowBgClass = '';
         $statusBadgeClasses = '';
         $durationIcon = '';
         
-        if ($movement->status === 'out' && $movement->checked_out_at) {
-            $durationDays = $movement->checked_out_at->diffInDays(now());
+        if ($firstMovement->status === 'out' && $firstMovement->checked_out_at) {
+            $durationDays = $firstMovement->checked_out_at->diffInDays(now());
             
             if ($durationDays > 6) {
                 // > 6 days - Rose/Red
@@ -47,19 +52,58 @@
             $statusBadgeClasses = 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200';
         }
         
-        $statusLabel = strtoupper($movement->status);
-        $checkedAt = optional($movement->checked_out_at ?? $movement->created_at)->format('d M Y H:i');
-        $location = $movement->status === 'out'
-            ? ($movement->destination ?? '—')
-            : ($movement->return_location ?? $movement->destination ?? '—');
+        $statusLabel = strtoupper($firstMovement->status);
+        $checkedAt = optional($firstMovement->checked_out_at ?? $firstMovement->created_at)->format('d M Y H:i');
+        $location = $firstMovement->status === 'out'
+            ? ($firstMovement->destination ?? '—')
+            : ($firstMovement->return_location ?? $firstMovement->destination ?? '—');
+            
+        // Collect all trolley codes
+        $trolleyCodes = [];
+        $trolleyTypes = [];
+        $trolleyKinds = [];
+        foreach ($groupMovements as $movement) {
+            if ($movement->trolley) {
+                $trolleyCodes[] = $movement->trolley->code;
+                $type = $movement->trolley->type_label ?? '';
+                $kind = $movement->trolley->kind_label ?? '';
+                if ($type && !in_array($type, $trolleyTypes)) {
+                    $trolleyTypes[] = $type;
+                }
+                if ($kind && !in_array($kind, $trolleyKinds)) {
+                    $trolleyKinds[] = $kind;
+                }
+            }
+        }
     @endphp
     <tr class="transition hover:bg-slate-900/60 {{ $rowBgClass }}">
         <td class="px-4 py-3 text-slate-300">
-            {{ $movement->sequence_number ? str_pad((string) $movement->sequence_number, 2, '0', STR_PAD_LEFT) : '—' }}
+            {{ $seqNum !== 'no_seq' ? str_pad((string) $seqNum, 2, '0', STR_PAD_LEFT) : '—' }}
         </td>
-        <td class="px-4 py-3 font-semibold text-white">{{ $movement->trolley?->code ?? '-' }}</td>
-        <td class="px-4 py-3 text-slate-300">{{ $movement->trolley?->type_label ?? '—' }}</td>
-        <td class="px-4 py-3 text-slate-300">{{ $movement->trolley?->kind_label ?? '—' }}</td>
+        <td class="px-4 py-3 font-semibold text-white">
+            <div class="flex flex-wrap gap-1">
+                @foreach($trolleyCodes as $code)
+                    <span class="inline-block rounded border border-slate-700 bg-slate-800/50 px-2 py-0.5 font-mono text-xs">{{ $code }}</span>
+                @endforeach
+                @if(empty($trolleyCodes))
+                    <span class="text-slate-500">—</span>
+                @endif
+            </div>
+        </td>
+        <td class="px-4 py-3 text-slate-300">
+            @if(!empty($trolleyTypes))
+                {{ implode(', ', $trolleyTypes) }}
+            @else
+                —
+            @endif
+        </td>
+        <td class="px-4 py-3 text-slate-300">
+            @if(!empty($trolleyKinds))
+                {{ implode(', ', $trolleyKinds) }}
+            @else
+                —
+            @endif
+        </td>
         <td class="px-4 py-3">
             <span class="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $statusBadgeClasses }}">
                 {{ $statusLabel }}
@@ -67,21 +111,21 @@
                     <span class="ml-1">{{ $durationIcon }}</span>
                 @endif
             </span>
-            @if($movement->status === 'out' && $durationDays > 0)
+            @if($firstMovement->status === 'out' && $durationDays > 0)
                 <div class="mt-1 text-xs text-slate-500">
                     {{ $durationDays }} hari keluar
                 </div>
             @endif
         </td>
-        <td class="px-4 py-3 text-slate-300">{{ $movement->mobileUser?->name ?? '—' }}</td>
+        <td class="px-4 py-3 text-slate-300">{{ $firstMovement->mobileUser?->name ?? '—' }}</td>
         <td class="px-4 py-3 text-slate-300">
-            {{ $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '—' }}
+            {{ $firstMovement->vehicle?->plate_number ?? $firstMovement->vehicle_snapshot ?? '—' }}
         </td>
         <td class="px-4 py-3 text-slate-300">
-            {{ $movement->driver?->name ?? $movement->driver_snapshot ?? '—' }}
+            {{ $firstMovement->driver?->name ?? $firstMovement->driver_snapshot ?? '—' }}
         </td>
         <td class="px-4 py-3 text-slate-300">{{ $location }}</td>
-        <td class="px-4 py-3 text-slate-500">{{ $movement->notes ?? '—' }}</td>
+        <td class="px-4 py-3 text-slate-500">{{ $firstMovement->notes ?? '—' }}</td>
         <td class="px-4 py-3 text-slate-400">
             {{ $checkedAt ?? '—' }}
         </td>

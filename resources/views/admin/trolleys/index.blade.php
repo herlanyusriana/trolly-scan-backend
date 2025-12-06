@@ -109,12 +109,39 @@
                         <tbody class="divide-y divide-slate-800/80">
                     @forelse($trolleys as $trolley)
                         @php
+                            // Calculate duration in days for OUT status
+                            $durationDays = 0;
+                            $durationClass = '';
+                            $rowBgClass = '';
+                            
+                            if ($trolley->status === 'out' && $trolley->status_since) {
+                                $durationDays = $trolley->status_since->diffInDays(now());
+                                
+                                if ($durationDays > 6) {
+                                    // > 6 days - Rose/Red
+                                    $durationClass = 'border-rose-500/60 bg-rose-500/20 text-rose-200 font-bold';
+                                    $rowBgClass = 'bg-rose-950/30';
+                                } elseif ($durationDays >= 3) {
+                                    // 3-6 days - Amber/Yellow
+                                    $durationClass = 'border-amber-500/60 bg-amber-500/20 text-amber-200 font-bold';
+                                    $rowBgClass = 'bg-amber-950/20';
+                                } else {
+                                    // < 3 days - Emerald/Green
+                                    $durationClass = 'border-emerald-500/50 bg-emerald-500/15 text-emerald-200';
+                                    $rowBgClass = 'bg-emerald-950/10';
+                                }
+                            }
+                            
                             $statusClass = $trolley->status === 'out'
-                                ? 'border-rose-400/40 bg-rose-500/10 text-rose-200'
+                                ? ($durationDays > 6 
+                                    ? 'border-rose-500/60 bg-rose-500/20 text-rose-200 font-bold'
+                                    : ($durationDays >= 3 
+                                        ? 'border-amber-500/60 bg-amber-500/20 text-amber-200 font-bold'
+                                        : 'border-blue-400/40 bg-blue-500/10 text-blue-200'))
                                 : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200';
                             $hasQr = filled($trolley->qr_code_path);
                         @endphp
-                        <tr class="hover:bg-slate-900/60 transition">
+                        <tr class="hover:bg-slate-900/60 transition {{ $rowBgClass }}">
                             <td class="px-4 py-3">
                                 @if ($hasQr)
                                     <label class="inline-flex items-center gap-2 text-xs text-slate-400">
@@ -152,9 +179,18 @@
                             <td class="px-4 py-3 text-slate-300">
                                 @if ($trolley->status_duration_label)
                                     <div class="flex flex-col leading-tight">
-                                        <span class="font-semibold text-white">{{ $trolley->status_duration_label }}</span>
+                                        <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $durationClass ?: 'text-white border-slate-600 bg-slate-800/50' }}">
+                                            {{ $trolley->status_duration_label }}
+                                            @if($trolley->status === 'out' && $durationDays >= 3)
+                                                @if($durationDays > 6)
+                                                    🚨
+                                                @else
+                                                    ⚠️
+                                                @endif
+                                            @endif
+                                        </span>
                                         @if ($trolley->status_since)
-                                            <span class="text-xs text-slate-500">Sejak {{ $trolley->status_since->format('d M Y H:i') }}</span>
+                                            <span class="mt-1 text-xs text-slate-500">Sejak {{ $trolley->status_since->format('d M Y H:i') }}</span>
                                         @endif
                                     </div>
                                 @else

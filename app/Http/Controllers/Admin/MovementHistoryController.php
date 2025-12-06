@@ -59,37 +59,73 @@ class MovementHistoryController extends Controller
             $handle = fopen('php://output', 'w');
 
             fputcsv($handle, [
-                'Sequence',
-                'Trolley',
+                'No. Urut',
+                'Troli',
+                'Jenis',
+                'Tipe',
                 'Status',
-                'Destination / Location',
-                'Time',
                 'Operator',
-                'Vehicle',
+                'Kendaraan',
                 'Driver',
-                'Notes',
+                'Tujuan / Lokasi',
+                'Catatan',
+                'Waktu',
             ]);
 
-            $query->chunkById(500, function ($chunk) use ($handle): void {
-                foreach ($chunk as $movement) {
-                    $time = optional($movement->checked_out_at ?? $movement->created_at)->format('Y-m-d H:i:s') ?: '-';
-                    $location = $movement->status === 'out'
-                        ? ($movement->destination ?? '-')
-                        : ($movement->return_location ?? $movement->destination ?? '-');
-
-                    fputcsv($handle, [
-                        $movement->sequence_number ?? '-',
-                        $movement->trolley?->code ?? '-',
-                        strtoupper($movement->status),
-                        $location,
-                        $time,
-                        $movement->mobileUser?->name ?? '-',
-                        $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '-',
-                        $movement->driver?->name ?? $movement->driver_snapshot ?? '-',
-                        $movement->notes ?? '-',
-                    ]);
+            // Get all movements and group by sequence_number
+            $allMovements = $query->get();
+            $groupedMovements = [];
+            
+            foreach ($allMovements as $movement) {
+                $seqNum = $movement->sequence_number ?? 'no_seq_' . $movement->id;
+                if (!isset($groupedMovements[$seqNum])) {
+                    $groupedMovements[$seqNum] = [];
                 }
-            });
+                $groupedMovements[$seqNum][] = $movement;
+            }
+
+            // Export each group as one row
+            foreach ($groupedMovements as $seqNum => $groupMovements) {
+                $firstMovement = $groupMovements[0];
+                
+                // Collect all trolley codes and types
+                $trolleyCodes = [];
+                $trolleyTypes = [];
+                $trolleyKinds = [];
+                
+                foreach ($groupMovements as $movement) {
+                    if ($movement->trolley) {
+                        $trolleyCodes[] = $movement->trolley->code;
+                        $type = $movement->trolley->type_label ?? '';
+                        $kind = $movement->trolley->kind_label ?? '';
+                        if ($type && !in_array($type, $trolleyTypes)) {
+                            $trolleyTypes[] = $type;
+                        }
+                        if ($kind && !in_array($kind, $trolleyKinds)) {
+                            $trolleyKinds[] = $kind;
+                        }
+                    }
+                }
+                
+                $time = optional($firstMovement->checked_out_at ?? $firstMovement->created_at)->format('Y-m-d H:i:s') ?: '-';
+                $location = $firstMovement->status === 'out'
+                    ? ($firstMovement->destination ?? '-')
+                    : ($firstMovement->return_location ?? $firstMovement->destination ?? '-');
+
+                fputcsv($handle, [
+                    str_starts_with($seqNum, 'no_seq_') ? '-' : str_pad((string) $seqNum, 2, '0', STR_PAD_LEFT),
+                    !empty($trolleyCodes) ? implode(', ', $trolleyCodes) : '-',
+                    !empty($trolleyTypes) ? implode(', ', $trolleyTypes) : '-',
+                    !empty($trolleyKinds) ? implode(', ', $trolleyKinds) : '-',
+                    strtoupper($firstMovement->status),
+                    $firstMovement->mobileUser?->name ?? '-',
+                    $firstMovement->vehicle?->plate_number ?? $firstMovement->vehicle_snapshot ?? '-',
+                    $firstMovement->driver?->name ?? $firstMovement->driver_snapshot ?? '-',
+                    $location,
+                    $firstMovement->notes ?? '-',
+                    $time,
+                ]);
+            }
 
             fclose($handle);
         }, $filename, [

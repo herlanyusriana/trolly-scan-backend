@@ -60,7 +60,8 @@ class DurationCategoryController extends Controller
             $handle = fopen('php://output', 'w');
             
             fputcsv($handle, [
-                'Kode Troli',
+                'No. Urut',
+                'Troli',
                 'Jenis',
                 'Tipe',
                 'User',
@@ -73,25 +74,58 @@ class DurationCategoryController extends Controller
                 'Catatan',
             ]);
             
-            $query->chunkById(500, function ($chunk) use ($handle): void {
-                foreach ($chunk as $movement) {
-                    $daysOut = $movement->checked_out_at ? $movement->checked_out_at->diffInDays(now()) : 0;
-                    
-                    fputcsv($handle, [
-                        $movement->trolley?->code ?? '-',
-                        $movement->trolley?->type_label ?? '-',
-                        $movement->trolley?->kind_label ?? '-',
-                        $movement->mobileUser?->name ?? '-',
-                        $movement->mobileUser?->phone ?? '-',
-                        $movement->destination ?? '-',
-                        $movement->vehicle?->plate_number ?? $movement->vehicle_snapshot ?? '-',
-                        $movement->driver?->name ?? $movement->driver_snapshot ?? '-',
-                        optional($movement->checked_out_at)->format('Y-m-d H:i:s') ?? '-',
-                        $daysOut,
-                        $movement->notes ?? '-',
-                    ]);
+            // Get all movements and group by sequence_number
+            $allMovements = $query->get();
+            $groupedMovements = [];
+            
+            foreach ($allMovements as $movement) {
+                $seqNum = $movement->sequence_number ?? 'no_seq_' . $movement->id;
+                if (!isset($groupedMovements[$seqNum])) {
+                    $groupedMovements[$seqNum] = [];
                 }
-            });
+                $groupedMovements[$seqNum][] = $movement;
+            }
+            
+            // Export each group as one row
+            foreach ($groupedMovements as $seqNum => $groupMovements) {
+                $firstMovement = $groupMovements[0];
+                
+                // Collect all trolley codes and types
+                $trolleyCodes = [];
+                $trolleyTypes = [];
+                $trolleyKinds = [];
+                
+                foreach ($groupMovements as $movement) {
+                    if ($movement->trolley) {
+                        $trolleyCodes[] = $movement->trolley->code;
+                        $type = $movement->trolley->type_label ?? '';
+                        $kind = $movement->trolley->kind_label ?? '';
+                        if ($type && !in_array($type, $trolleyTypes)) {
+                            $trolleyTypes[] = $type;
+                        }
+                        if ($kind && !in_array($kind, $trolleyKinds)) {
+                            $trolleyKinds[] = $kind;
+                        }
+                    }
+                }
+                
+                $daysOut = $firstMovement->checked_out_at ? $firstMovement->checked_out_at->diffInDays(now()) : 0;
+                
+                fputcsv($handle, [
+                    str_starts_with($seqNum, 'no_seq_') ? '-' : str_pad((string) $seqNum, 2, '0', STR_PAD_LEFT),
+                    !empty($trolleyCodes) ? implode(', ', $trolleyCodes) : '-',
+                    !empty($trolleyTypes) ? implode(', ', $trolleyTypes) : '-',
+                    !empty($trolleyKinds) ? implode(', ', $trolleyKinds) : '-',
+                    $firstMovement->mobileUser?->name ?? '-',
+                    $firstMovement->mobileUser?->phone ?? '-',
+                    $firstMovement->destination ?? '-',
+                    $firstMovement->vehicle?->plate_number ?? $firstMovement->vehicle_snapshot ?? '-',
+                    $firstMovement->driver?->name ?? $firstMovement->driver_snapshot ?? '-',
+                    optional($firstMovement->checked_out_at)->format('Y-m-d H:i:s') ?? '-',
+                    $daysOut,
+                    $firstMovement->notes ?? '-',
+                ]);
+            }
             
             fclose($handle);
         }, $filename, [

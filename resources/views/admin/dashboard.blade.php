@@ -47,7 +47,7 @@
 
         <!-- Duration Category Cards -->
         <div class="grid gap-4 md:grid-cols-3">
-            <a href="{{ route('admin.history.index') }}?duration=less_than_3" class="group rounded-3xl border border-emerald-800/70 bg-gradient-to-br from-emerald-900/70 to-slate-900/70 p-6 shadow-xl shadow-emerald-950/30 transition hover:border-emerald-500/70 hover:shadow-2xl">
+            <a href="{{ route('admin.duration-category.index', ['category' => 'less_than_3']) }}" class="group rounded-3xl border border-emerald-800/70 bg-gradient-to-br from-emerald-900/70 to-slate-900/70 p-6 shadow-xl shadow-emerald-950/30 transition hover:border-emerald-500/70 hover:shadow-2xl">
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         <p class="text-xs uppercase tracking-wide text-emerald-300 font-semibold">✅ Kurang dari 3 Hari</p>
@@ -63,7 +63,7 @@
                 </div>
             </a>
 
-            <a href="{{ route('admin.history.index') }}?duration=between_3_and_6" class="group rounded-3xl border border-amber-800/70 bg-gradient-to-br from-amber-900/70 to-slate-900/70 p-6 shadow-xl shadow-amber-950/30 transition hover:border-amber-500/70 hover:shadow-2xl">
+            <a href="{{ route('admin.duration-category.index', ['category' => 'between_3_and_6']) }}" class="group rounded-3xl border border-amber-800/70 bg-gradient-to-br from-amber-900/70 to-slate-900/70 p-6 shadow-xl shadow-amber-950/30 transition hover:border-amber-500/70 hover:shadow-2xl">
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         <p class="text-xs uppercase tracking-wide text-amber-300 font-semibold">⚠️ Antara 3-6 Hari</p>
@@ -79,7 +79,7 @@
                 </div>
             </a>
 
-            <a href="{{ route('admin.history.index') }}?duration=more_than_6" class="group rounded-3xl border border-rose-800/70 bg-gradient-to-br from-rose-900/70 to-slate-900/70 p-6 shadow-xl shadow-rose-950/30 transition hover:border-rose-500/70 hover:shadow-2xl">
+            <a href="{{ route('admin.duration-category.index', ['category' => 'more_than_6']) }}" class="group rounded-3xl border border-rose-800/70 bg-gradient-to-br from-rose-900/70 to-slate-900/70 p-6 shadow-xl shadow-rose-950/30 transition hover:border-rose-500/70 hover:shadow-2xl">
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         <p class="text-xs uppercase tracking-wide text-rose-300 font-semibold">🚨 Lebih dari 6 Hari</p>

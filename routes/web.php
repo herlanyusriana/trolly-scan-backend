@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DriverController;
+use App\Http\Controllers\Admin\DurationCategoryController;
 use App\Http\Controllers\Admin\MobileUserApprovalController;
 use App\Http\Controllers\Admin\MovementHistoryController;
 use App\Http\Controllers\Admin\QrController;
 use App\Http\Controllers\Admin\TrolleyController;
 use App\Http\Controllers\Admin\VehicleController;
-use App\Http\Controllers\Admin\DriverController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('admin.dashboard'));
@@ -22,6 +23,10 @@ Route::middleware('auth:admin')->group(function (): void {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard/realtime', [DashboardController::class, 'realtime'])->name('admin.dashboard.realtime');
+    
+    Route::get('/duration-category', [DurationCategoryController::class, 'index'])->name('admin.duration-category.index');
+    Route::get('/duration-category/export', [DurationCategoryController::class, 'export'])->name('admin.duration-category.export');
+    
     Route::get('/history', [MovementHistoryController::class, 'index'])->name('admin.history.index');
     Route::get('/history/export', [MovementHistoryController::class, 'export'])->name('admin.history.export');
     Route::get('/history/export/xlsx', [MovementHistoryController::class, 'exportXlsx'])->name('admin.history.export.xlsx');

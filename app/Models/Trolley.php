@@ -118,17 +118,13 @@ class Trolley extends Model
         $diff = $since->diffInSeconds(now());
 
         $days = intdiv($diff, 86400);
-        $hours = intdiv($diff % 86400, 3600);
-        $minutes = intdiv($diff % 3600, 60);
 
-        $parts = [];
-
+        // Jika lebih dari atau sama dengan 24 jam, tampilkan hanya dalam hari (D)
         if ($days > 0) {
-            $parts[] = $days . ' day' . ($days !== 1 ? 's' : '');
+            return $days . ' D';
         }
 
-        $parts[] = sprintf('%02dh %02dm', $hours, $minutes);
-
-        return implode(' ', $parts);
+        // Jika kurang dari 24 jam, tampilkan "0 D"
+        return '0 D';
     }
 }

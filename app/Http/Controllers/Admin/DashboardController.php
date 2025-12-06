@@ -16,11 +16,13 @@ class DashboardController extends Controller
         $stats = $this->getStats();
         $recentMovements = $this->getRecentMovements();
         $pendingUsers = $this->getPendingUsers();
+        $overdueMovements = $this->getOverdueMovements();
 
         return view('admin.dashboard', [
             'stats' => $stats,
             'recentMovements' => $recentMovements,
             'pendingUsers' => $pendingUsers,
+            'overdueMovements' => $overdueMovements,
             'statusPills' => [
                 'in' => 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200',
                 'out' => 'border-rose-400/40 bg-rose-500/10 text-rose-200',
@@ -37,6 +39,7 @@ class DashboardController extends Controller
             'stats' => [
                 'in' => $stats['trolleys']['in'],
                 'out' => $stats['trolleys']['out'],
+                'overdue' => $stats['trolleys']['overdue'],
                 'approved' => $stats['mobile_users']['approved'],
                 'pending' => $stats['mobile_users']['pending'],
                 'kinds' => $stats['trolleys']['kinds'],
@@ -68,6 +71,13 @@ class DashboardController extends Controller
             $kindsOut[$label] = (int) ($outCounts[$kindKey] ?? 0);
         }
 
+        $threeDaysAgo = now()->subDays(3);
+        $overdueCount = TrolleyMovement::query()
+            ->where('status', 'out')
+            ->where('checked_out_at', '<=', $threeDaysAgo)
+            ->whereNull('checked_in_at')
+            ->count();
+
         return [
             'mobile_users' => [
                 'pending' => MobileUser::query()->where('status', 'pending')->count(),
@@ -87,6 +97,7 @@ class DashboardController extends Controller
                 'kinds_out' => $kindsOut,
                 'in' => Trolley::query()->where('status', 'in')->count(),
                 'out' => Trolley::query()->where('status', 'out')->count(),
+                'overdue' => $overdueCount,
             ],
         ];
     }
@@ -107,5 +118,22 @@ class DashboardController extends Controller
             ->latest()
             ->limit(5)
             ->get();
+    }
+
+    protected function getOverdueMovements()
+    {
+        $threeDaysAgo = now()->subDays(3);
+
+        return TrolleyMovement::query()
+            ->with(['trolley', 'mobileUser'])
+            ->where('status', 'out')
+            ->where('checked_out_at', '<=', $threeDaysAgo)
+            ->whereNull('checked_in_at')
+            ->orderBy('checked_out_at', 'asc')
+            ->get()
+            ->map(function ($movement) {
+                $movement->days_out = now()->diffInDays($movement->checked_out_at);
+                return $movement;
+            });
     }
 }

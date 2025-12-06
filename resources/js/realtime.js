@@ -23,6 +23,7 @@ const initDashboardRealtime = () => {
 
     const elIn = root.querySelector('[data-dashboard-in]');
     const elOut = root.querySelector('[data-dashboard-out]');
+    const elOverdue = root.querySelector('[data-dashboard-overdue]');
     const elApproved = root.querySelector('[data-dashboard-approved]');
     const elPending = root.querySelector('[data-dashboard-pending]');
     const kindEls = root.querySelectorAll('[data-dashboard-kind]');
@@ -33,6 +34,7 @@ const initDashboardRealtime = () => {
         if (!stats) return;
         if (elIn) elIn.textContent = Number(stats.in ?? 0).toLocaleString('id-ID');
         if (elOut) elOut.textContent = Number(stats.out ?? 0).toLocaleString('id-ID');
+        if (elOverdue) elOverdue.textContent = Number(stats.overdue ?? 0).toLocaleString('id-ID');
         if (elApproved) elApproved.textContent = Number(stats.approved ?? 0).toLocaleString('id-ID');
         if (elPending) elPending.textContent = Number(stats.pending ?? 0).toLocaleString('id-ID');
         if (stats.kinds) {

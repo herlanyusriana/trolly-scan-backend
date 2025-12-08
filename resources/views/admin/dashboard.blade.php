@@ -99,41 +99,29 @@
         <!-- Other Stats -->
         <div class="grid gap-4 md:grid-cols-3">
             <a href="{{ route('admin.approvals.index') }}" class="group rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30 transition hover:border-blue-500/50 hover:bg-slate-900">
-                <p class="text-xs uppercase tracking-wide text-slate-400">User Mobile Disetujui</p>
-                <div class="mt-4 text-3xl font-semibold text-white transition group-hover:text-blue-400" data-dashboard-approved>{{ number_format($stats['mobile_users']['approved']) }}</div>
-                <p class="mt-6 text-xs text-slate-500">Klik untuk melihat daftar user</p>
+                <p class="text-xs uppercase tracking-wide text-slate-300">User Mobile Disetujui</p>
+                <div class="mt-4 flex items-end gap-3">
+                    <span class="text-3xl font-semibold text-white transition group-hover:text-blue-400" data-dashboard-approved>{{ number_format($stats['mobile_users']['approved']) }}</span>
+                </div>
+                <p class="mt-6 text-xs text-slate-400">Klik untuk melihat daftar user</p>
             </a>
 
-            <a href="{{ route('admin.approvals.index') }}" class="group rounded-3xl border border-amber-800/70 bg-gradient-to-br from-amber-900/70 to-slate-900/70 p-6 shadow-xl shadow-amber-950/30 transition hover:border-amber-500/70 hover:bg-slate-900">
-                <div class="flex items-center justify-between">
-                    <div class="flex-1">
-                        <p class="text-xs uppercase tracking-wide text-amber-300 font-semibold">👤 User Pending</p>
-                        <div class="mt-4 flex items-end gap-3">
-                            <span class="text-3xl font-semibold text-white transition group-hover:text-amber-400" data-dashboard-pending>{{ number_format($stats['mobile_users']['pending']) }}</span>
-                            <span class="mb-1 text-sm font-semibold text-amber-200">USER</span>
-                        </div>
-                        <p class="mt-4 text-xs text-amber-200/70">Klik untuk approve user baru</p>
-                    </div>
-                    <div class="rounded-full border-2 border-amber-500/50 bg-amber-500/20 p-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
-                    </div>
+            <a href="{{ route('admin.approvals.index') }}" class="group rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30 transition hover:border-amber-500/50 hover:bg-slate-900">
+                <p class="text-xs uppercase tracking-wide text-slate-300">👤 User Pending</p>
+                <div class="mt-4 flex items-end gap-3">
+                    <span class="text-3xl font-semibold text-white transition group-hover:text-amber-400" data-dashboard-pending>{{ number_format($stats['mobile_users']['pending']) }}</span>
+                    <span class="rounded-full border border-amber-600 bg-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-200">USER</span>
                 </div>
+                <p class="mt-4 text-xs text-slate-400">Klik untuk approve user baru</p>
             </a>
 
-            <a href="{{ route('admin.history.index') }}?duration=more_than_3" class="group rounded-3xl border border-orange-800/70 bg-gradient-to-br from-orange-900/70 to-slate-900/70 p-6 shadow-xl shadow-orange-950/30 transition hover:border-orange-500/70 hover:bg-slate-900">
-                <div class="flex items-center justify-between">
-                    <div class="flex-1">
-                        <p class="text-xs uppercase tracking-wide text-orange-300 font-semibold">⚠️ Troli Terlambat</p>
-                        <div class="mt-4 flex items-end gap-3">
-                            <span class="text-3xl font-semibold text-white transition group-hover:text-orange-400">{{ $overdueMovements->isNotEmpty() ? number_format($overdueMovements->count()) : '0' }}</span>
-                            <span class="mb-1 text-sm font-semibold text-orange-200">TROLI</span>
-                        </div>
-                        <p class="mt-4 text-xs text-orange-200/70">OUT lebih dari 3 hari</p>
-                    </div>
-                    <div class="rounded-full border-2 border-orange-500/50 bg-orange-500/20 p-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
-                    </div>
+            <a href="{{ route('admin.history.index') }}?duration=more_than_3" class="group rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30 transition hover:border-orange-500/50 hover:bg-slate-900">
+                <p class="text-xs uppercase tracking-wide text-slate-300">⚠️ Troli Terlambat</p>
+                <div class="mt-4 flex items-end gap-3">
+                    <span class="text-3xl font-semibold text-white transition group-hover:text-orange-400">{{ $overdueMovements->isNotEmpty() ? number_format($overdueMovements->count()) : '0' }}</span>
+                    <span class="rounded-full border border-orange-600 bg-orange-500/20 px-3 py-1 text-xs font-semibold text-orange-200">TROLI</span>
                 </div>
+                <p class="mt-4 text-xs text-slate-400">OUT lebih dari 3 hari</p>
             </a>
         </div>
 

@@ -217,10 +217,12 @@
                             </div>
 
                             <div class="space-y-2 border-t border-slate-800/60 pt-3 text-xs">
-                                <div class="flex justify-between">
-                                    <span class="text-slate-500">Operator:</span>
-                                    <span class="font-medium text-slate-200">{{ $movement->user->name }}</span>
-                                </div>
+                                @if($movement->user)
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-500">Operator:</span>
+                                        <span class="font-medium text-slate-200">{{ $movement->user->name }}</span>
+                                    </div>
+                                @endif
                                 @if($movement->vehicle)
                                     <div class="flex justify-between">
                                         <span class="text-slate-500">Kendaraan:</span>

@@ -161,12 +161,10 @@
                     x-cloak
                 >
                     <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2 text-lg font-semibold text-blue-400" x-show="!sidebarCollapsed" x-transition>
+                        <!-- Logo Section -->
+                        <div class="flex items-center gap-2 text-lg font-semibold text-blue-400" :class="sidebarCollapsed ? 'flex-1 justify-center' : ''" x-show="!sidebarCollapsed || !mobileMenuOpen" x-transition>
                             <img src="{{ asset('images/logo GCI.png') }}" alt="PT Geum Cheon Indo" class="h-10 w-auto rounded-xl bg-white/5 p-1">
-                            <span>In-Out Trolley</span>
-                        </div>
-                        <div x-show="sidebarCollapsed" x-transition class="mx-auto">
-                            <img src="{{ asset('images/logo GCI.png') }}" alt="PT Geum Cheon Indo" class="h-10 w-auto rounded-xl bg-white/5 p-1">
+                            <span x-show="!sidebarCollapsed" x-transition>In-Out Trolley</span>
                         </div>
 
                         <div class="flex items-center gap-2">

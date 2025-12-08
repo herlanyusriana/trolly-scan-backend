@@ -94,13 +94,13 @@
                 <p class="mt-4 text-xs text-slate-400">Klik untuk approve user baru</p>
             </a>
 
-            <a href="{{ route('admin.history.index') }}?duration=more_than_3" class="group rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30 transition hover:border-orange-500/50 hover:bg-slate-900">
-                <p class="text-xs uppercase tracking-wide text-slate-300">⚠️ Troli Terlambat</p>
+            <a href="{{ route('admin.trolleys.index') }}" class="group rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/30 transition hover:border-blue-500/50 hover:bg-slate-900">
+                <p class="text-xs uppercase tracking-wide text-slate-300">🛒 Jumlah Troli</p>
                 <div class="mt-4 flex items-end gap-3">
-                    <span class="text-3xl font-semibold text-white transition group-hover:text-orange-400">{{ $overdueMovements->isNotEmpty() ? number_format($overdueMovements->count()) : '0' }}</span>
-                    <span class="rounded-full border border-orange-600 bg-orange-500/20 px-3 py-1 text-xs font-semibold text-orange-200">TROLI</span>
+                    <span class="text-3xl font-semibold text-white transition group-hover:text-blue-400">{{ number_format($stats['trolleys']['total']) }}</span>
+                    <span class="rounded-full border border-blue-600 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-200">TROLI</span>
                 </div>
-                <p class="mt-4 text-xs text-slate-400">OUT lebih dari 3 hari</p>
+                <p class="mt-4 text-xs text-slate-400">Total semua troli</p>
             </a>
         </div>
 

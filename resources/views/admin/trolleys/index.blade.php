@@ -161,26 +161,26 @@
                             <td class="px-6 py-4 font-mono font-semibold text-white">{{ $trolley->code }}</td>
                             <td class="px-6 py-4 text-slate-300">{{ \App\Models\Trolley::TYPE_LABELS[$trolley->type] ?? ucfirst($trolley->type) }}</td>
                             <td class="px-6 py-4 text-slate-300">{{ \App\Models\Trolley::KIND_LABELS[$trolley->kind] ?? ucfirst($trolley->kind) }}</td>
-                            <td class="px-6 py-4 text-slate-300">
+                            <td class="px-6 py-4">
                                 @php
                                     $lastStatus = $trolley->last_movement_status;
                                     $lastAt = $trolley->last_movement_at;
                                 @endphp
                                 @if ($lastStatus && $lastAt)
-                                    <div class="flex flex-col leading-tight">
-                                        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold {{ $lastStatus === 'out' ? 'border-blue-400/40 bg-blue-500/10 text-blue-200' : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200' }}">
+                                    <div class="flex flex-col gap-1">
+                                        <span class="inline-flex items-center self-start rounded-full border px-2.5 py-0.5 text-xs font-semibold {{ $lastStatus === 'out' ? 'border-blue-400/40 bg-blue-500/10 text-blue-200' : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200' }}">
                                             {{ strtoupper($lastStatus) }}
                                         </span>
-                                        <span class="mt-1 text-xs text-slate-500">{{ $lastAt->format('d M Y H:i') }}</span>
+                                        <span class="text-xs text-slate-500">{{ $lastAt->format('d M Y H:i') }}</span>
                                     </div>
                                 @else
                                     <span class="text-slate-600">-</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-slate-300">
+                            <td class="px-6 py-4">
                                 @if ($trolley->status_duration_label)
-                                    <div class="flex flex-col leading-tight">
-                                        <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold {{ $durationClass ?: 'text-white border-slate-600 bg-slate-800/50' }}">
+                                    <div class="flex flex-col gap-1">
+                                        <span class="inline-flex items-center self-start rounded-full border px-3 py-1 text-xs font-semibold {{ $durationClass ?: 'text-white border-slate-600 bg-slate-800/50' }}">
                                             {{ $trolley->status_duration_label }}
                                             @if($trolley->status === 'out' && $durationDays >= 3)
                                                 @if($durationDays > 6)
@@ -191,7 +191,7 @@
                                             @endif
                                         </span>
                                         @if ($trolley->status_since)
-                                            <span class="mt-1 text-xs text-slate-500">Sejak {{ $trolley->status_since->format('d M Y H:i') }}</span>
+                                            <span class="text-xs text-slate-500">Sejak {{ $trolley->status_since->format('d M Y H:i') }}</span>
                                         @endif
                                     </div>
                                 @else

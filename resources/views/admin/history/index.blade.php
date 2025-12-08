@@ -193,7 +193,7 @@
             </div>
 
             <div class="border-t border-slate-800/60 px-6 py-4" data-history-pagination>
-                {{ $movements->links() }}
+                {{ $movements->withQueryString()->links() }}
             </div>
         </section>
     </div>

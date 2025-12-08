@@ -112,13 +112,29 @@ const initHistoryRealtime = () => {
             }
             if (data.pagination && paginationEl) {
                 paginationEl.innerHTML = data.pagination;
+                setupPaginationLinks();
             }
         } catch (error) {
             console.error('History realtime error:', error);
         }
     };
 
+    const setupPaginationLinks = () => {
+        if (!paginationEl) return;
+        
+        // Handle pagination links click to prevent navigating to /refresh endpoint
+        paginationEl.querySelectorAll('a[href*="page="]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                // Navigate to the regular history page with pagination
+                window.location.href = href.replace('/history/refresh', '/history');
+            });
+        });
+    };
+
     refresh();
+    setupPaginationLinks(); // Setup initial pagination links
     setInterval(refresh, 20000);
 };
 

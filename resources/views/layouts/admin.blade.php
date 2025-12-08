@@ -174,8 +174,8 @@
                                 class="hidden rounded-lg border border-slate-700 p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-white lg:block"
                                 :title="sidebarCollapsed ? 'Tampilkan Sidebar' : 'Sembunyikan Sidebar'"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="sidebarCollapsed ? 'rotate-180' : ''">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" :d="sidebarCollapsed ? 'M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3' : 'M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5'" />
                                 </svg>
                             </button>
 

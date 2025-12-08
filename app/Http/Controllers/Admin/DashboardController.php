@@ -75,7 +75,7 @@ class DashboardController extends Controller
         $threeDaysAgo = now()->subDays(3);
         $sixDaysAgo = now()->subDays(6);
         
-        // Count by duration categories
+        // Count by duration categories - using TrolleyMovement
         $lessThan3Days = TrolleyMovement::query()
             ->where('status', 'out')
             ->where('checked_out_at', '>', $threeDaysAgo)
@@ -100,6 +100,9 @@ class DashboardController extends Controller
             ->where('checked_out_at', '<=', $threeDaysAgo)
             ->whereNull('checked_in_at')
             ->count();
+            
+        // Total OUT should match sum of duration categories
+        $totalOut = $lessThan3Days + $between3And6Days + $moreThan6Days;
 
         return [
             'mobile_users' => [
@@ -119,7 +122,7 @@ class DashboardController extends Controller
                 ],
                 'kinds_out' => $kindsOut,
                 'in' => Trolley::query()->where('status', 'in')->count(),
-                'out' => Trolley::query()->where('status', 'out')->count(),
+                'out' => $totalOut,
                 'overdue' => $overdueCount,
                 'duration_categories' => [
                     'less_than_3' => $lessThan3Days,

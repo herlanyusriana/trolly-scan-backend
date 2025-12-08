@@ -40,18 +40,18 @@
             : ($movement->return_location ?? $movement->destination ?? '-');
     @endphp
     <tr class="transition hover:bg-slate-900/60">
-        <td class="px-6 py-3 font-medium text-white">{{ $movement->trolley->code }}</td>
-        <td class="px-6 py-3 text-slate-400">{{ $movement->mobileUser?->name ?? '-' }}</td>
-        <td class="px-6 py-3">
-            <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase {{ $badgeClass }}">
+        <td class="px-3 py-2 font-medium text-white sm:px-6 sm:py-3">{{ $movement->trolley->code }}</td>
+        <td class="px-3 py-2 text-slate-400 sm:px-6 sm:py-3">{{ $movement->mobileUser?->name ?? '-' }}</td>
+        <td class="px-3 py-2 sm:px-6 sm:py-3">
+            <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold uppercase sm:px-3 sm:py-1 {{ $badgeClass }}">
                 {{ $statusLabel }}
             </span>
         </td>
-        <td class="px-6 py-3 text-slate-400">{{ $location }}</td>
-        <td class="px-6 py-3 text-slate-400">{{ $timestamp ?? '—' }}</td>
+        <td class="px-3 py-2 text-slate-400 sm:px-6 sm:py-3">{{ $location }}</td>
+        <td class="px-3 py-2 text-slate-400 sm:px-6 sm:py-3">{{ $timestamp ?? '—' }}</td>
     </tr>
 @empty
     <tr>
-        <td colspan="5" class="px-6 py-10 text-center text-slate-500">Belum ada data pergerakan.</td>
+        <td colspan="5" class="px-3 py-8 text-center text-slate-500 sm:px-6 sm:py-10">Belum ada data pergerakan.</td>
     </tr>
 @endforelse

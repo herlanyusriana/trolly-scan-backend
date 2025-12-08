@@ -13,33 +13,44 @@
 @section('content')
     <div
         x-data="qrSelection({ ids: @js($printableIds) })"
-        class="rounded-3xl border border-slate-800 bg-slate-900/70 shadow-xl shadow-slate-950/20"
+        class="rounded-2xl border border-slate-800 bg-slate-900/70 shadow-xl shadow-slate-950/20 sm:rounded-3xl"
     >
-        <div class="flex flex-col gap-4 border-b border-slate-800 px-6 py-5 md:flex-row md:items-center md:justify-between">
+        <div class="flex flex-col gap-3 border-b border-slate-800 px-4 py-4 sm:gap-4 sm:px-6 sm:py-5 md:flex-row md:items-center md:justify-between">
             <div>
-                <h1 class="text-xl font-semibold text-white">Data Troli</h1>
-                <p class="mt-1 text-sm text-slate-500">Kelola troli dan cetak QR code secara massal tanpa boros kertas.</p>
+                <h1 class="text-lg font-semibold text-white sm:text-xl">Data Troli</h1>
+                <p class="mt-1 text-xs text-slate-500 sm:text-sm">Kelola troli dan cetak QR code secara massal tanpa boros kertas.</p>
             </div>
-            <div class="flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <a
                     href="{{ route('trolleys.export', ['q' => $searchValue, 'status' => $statusValue]) }}"
-                    class="inline-flex items-center gap-2 rounded-2xl border border-emerald-500/40 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-500/10"
+                    class="inline-flex items-center gap-2 rounded-2xl border border-emerald-500/40 px-3 py-2 text-xs font-semibold text-emerald-100 transition hover:bg-emerald-500/10 sm:px-4 sm:text-sm"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v12m0 0l3.75-3.75M12 16.5l-3.75-3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5z" />
                     </svg>
-                    Export CSV
+                    <span class="hidden sm:inline">Export</span> CSV
                 </a>
                 <a
                     href="{{ route('trolleys.export.xlsx', ['q' => $searchValue, 'status' => $statusValue]) }}"
-                    class="inline-flex items-center gap-2 rounded-2xl border border-blue-500/40 px-4 py-2 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/10"
+                    class="inline-flex items-center gap-2 rounded-2xl border border-blue-500/40 px-3 py-2 text-xs font-semibold text-blue-100 transition hover:bg-blue-500/10 sm:px-4 sm:text-sm"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25L11.25 6m0 0L13.5 8.25M11.25 6v9m0 6.75c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z" />
                     </svg>
-                    Export XLSX
+                    <span class="hidden sm:inline">Export</span> XLSX
                 </a>
-                <form action="{{ route('trolleys.index') }}" method="GET" class="flex flex-wrap items-center gap-2">
+                <a href="{{ route('trolleys.create') }}" class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500 sm:px-5 sm:text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    <span class="hidden sm:inline">Tambah Troli</span>
+                    <span class="sm:hidden">Tambah</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="border-b border-slate-800 px-4 py-4 sm:px-6 sm:py-5">
+            <form action="{{ route('trolleys.index') }}" method="GET" class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2">
                     <label class="sr-only" for="trolley-search">Cari troli</label>
                     <input
                         id="trolley-search"
@@ -47,50 +58,45 @@
                         name="q"
                         value="{{ $searchValue }}"
                         placeholder="Cari kode / jenis..."
-                        class="w-56 rounded-2xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 shadow-inner focus:border-blue-500 focus:ring focus:ring-blue-500/30 sm:w-64"
+                        class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 shadow-inner focus:border-blue-500 focus:ring focus:ring-blue-500/30 sm:w-56 md:w-64"
                     >
                     <label class="sr-only" for="trolley-status">Status</label>
                     <select
                         id="trolley-status"
                         name="status"
-                        class="w-36 rounded-2xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-blue-500 focus:ring focus:ring-blue-500/30"
+                        class="w-full rounded-2xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-blue-500 focus:ring focus:ring-blue-500/30 sm:w-36"
                     >
                         <option value="" @selected($statusValue === null || $statusValue === '')>Semua Status</option>
                         <option value="in" @selected($statusValue === 'in')>IN (Tersedia)</option>
                         <option value="out" @selected($statusValue === 'out')>OUT (Sedang Digunakan)</option>
                     </select>
-                    <button
-                        type="submit"
-                        class="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 10-10.607-10.607A7.5 7.5 0 0016.65 16.65z" />
-                        </svg>
-                        Cari Trolly
-                    </button>
-                    @if ($searchValue || $statusValue)
-                        <a
-                            href="{{ route('trolleys.index') }}"
-                            class="inline-flex items-center gap-1 rounded-2xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-800/80"
+                    <div class="flex gap-2">
+                        <button
+                            type="submit"
+                            class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 sm:flex-initial"
                         >
-                            Reset
-                        </a>
-                    @endif
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 10-10.607-10.607A7.5 7.5 0 0016.65 16.65z" />
+                            </svg>
+                            Cari
+                        </button>
+                        @if ($searchValue || $statusValue)
+                            <a
+                                href="{{ route('trolleys.index') }}"
+                                class="inline-flex items-center gap-1 rounded-2xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-800/80"
+                            >
+                                Reset
+                            </a>
+                        @endif
+                    </div>
                 </form>
-
-                <a href="{{ route('trolleys.create') }}" class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    Tambah Troli
-                </a>
             </div>
         </div>
 
-        <div class="px-6 py-5">
+        <div class="px-3 py-4 sm:px-5 sm:py-5 md:px-6">
             <div class="rounded-2xl border border-slate-800/60 bg-slate-950/50 shadow-inner shadow-slate-950/30">
-                <div class="overflow-x-auto">
-                    <table class="w-full min-w-[960px] text-sm text-slate-300">
+                <div class="overflow-x-auto scrollbar-thin">
+                    <table class="w-full min-w-[960px] text-xs text-slate-300 sm:text-sm">
                         <thead class="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                         <th class="px-6 py-4 text-left font-semibold">
@@ -113,10 +119,10 @@
                             $durationDays = 0;
                             $durationClass = '';
                             $rowBgClass = '';
-                            
+
                             if ($trolley->status === 'out' && $trolley->status_since) {
                                 $durationDays = $trolley->status_since->diffInDays(now());
-                                
+
                                 if ($durationDays > 6) {
                                     // > 6 days - Rose/Red
                                     $durationClass = 'border-rose-500/60 bg-rose-500/20 text-rose-200 font-bold';
@@ -131,11 +137,11 @@
                                     $rowBgClass = 'bg-emerald-950/10';
                                 }
                             }
-                            
+
                             $statusClass = $trolley->status === 'out'
-                                ? ($durationDays > 6 
+                                ? ($durationDays > 6
                                     ? 'border-rose-500/60 bg-rose-500/20 text-rose-200 font-bold'
-                                    : ($durationDays >= 3 
+                                    : ($durationDays >= 3
                                         ? 'border-amber-500/60 bg-amber-500/20 text-amber-200 font-bold'
                                         : 'border-blue-400/40 bg-blue-500/10 text-blue-200'))
                                 : 'border-emerald-400/40 bg-emerald-500/10 text-emerald-200';

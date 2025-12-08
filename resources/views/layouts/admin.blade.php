@@ -85,7 +85,7 @@
         </script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="relative overflow-x-hidden bg-slate-950 text-slate-100 antialiased">
+    <body class="relative overflow-x-hidden bg-slate-950 text-slate-100 antialiased" x-data="{ mobileMenuOpen: false }">
         <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
             <div class="absolute -top-32 -left-24 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl"></div>
             <div class="absolute top-1/3 -right-32 h-80 w-80 rounded-full bg-emerald-500/15 blur-3xl"></div>
@@ -140,10 +140,34 @@
             @endphp
 
             <div class="flex min-h-screen overflow-hidden">
-                <aside class="hidden w-64 flex-col border-r border-slate-800 bg-slate-900/80 px-6 py-8 lg:flex">
-                    <div class="flex items-center gap-2 text-lg font-semibold text-blue-400">
-                        <img src="{{ asset('images/logo GCI.png') }}" alt="PT Geum Cheon Indo" class="h-10 w-auto rounded-xl bg-white/5 p-1">
-                        In-Out Trolley
+                <!-- Mobile Sidebar Overlay -->
+                <div
+                    x-show="mobileMenuOpen"
+                    x-transition.opacity
+                    @click="mobileMenuOpen = false"
+                    class="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden"
+                ></div>
+
+                <!-- Sidebar -->
+                <aside
+                    class="fixed inset-y-0 left-0 z-50 w-64 flex-col border-r border-slate-800 bg-slate-900/95 px-6 py-8 backdrop-blur-sm transition-transform duration-300 lg:static lg:flex"
+                    :class="mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+                    x-cloak
+                >
+                    <div class="flex items-center justify-between gap-2 text-lg font-semibold text-blue-400">
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('images/logo GCI.png') }}" alt="PT Geum Cheon Indo" class="h-10 w-auto rounded-xl bg-white/5 p-1">
+                            In-Out Trolley
+                        </div>
+                        <!-- Close button for mobile -->
+                        <button
+                            @click="mobileMenuOpen = false"
+                            class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white lg:hidden"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
                     <nav class="mt-10 flex flex-1 flex-col gap-1 text-sm">
                         @foreach ($navigation as $item)
@@ -154,6 +178,7 @@
                             <a
                                 href="{{ route($item['route']) }}"
                                 class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition {{ $isActive ? 'bg-blue-500/20 text-white' : 'text-slate-300 hover:bg-slate-800/80 hover:text-white' }}"
+                                @click="mobileMenuOpen = false"
                             >
                                 {!! $item['icon'] !!}
                                 <span>{{ $item['label'] }}</span>
@@ -176,11 +201,22 @@
                 </aside>
 
                 <div class="flex flex-1 flex-col">
-                    <header class="border-b border-slate-800/60 bg-slate-900/70 px-6 py-5 backdrop-blur">
-                        <div class="flex flex-col gap-1 lg:flex-row lg:items-center lg:justify-between">
-                            <div>
-                                <p class="text-xs uppercase tracking-wide text-slate-400">Admin Panel</p>
-                                <h1 class="text-2xl font-semibold text-white">{{ $title ?? 'Dashboard' }}</h1>
+                    <header class="border-b border-slate-800/60 bg-slate-900/70 px-4 py-4 backdrop-blur sm:px-6 sm:py-5">
+                        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                            <div class="flex items-center gap-3">
+                                <!-- Mobile Menu Button -->
+                                <button
+                                    @click="mobileMenuOpen = !mobileMenuOpen"
+                                    class="rounded-lg border border-slate-700 bg-slate-800/80 p-2 text-slate-300 transition hover:bg-slate-800 lg:hidden"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                    </svg>
+                                </button>
+                                <div>
+                                    <p class="text-xs uppercase tracking-wide text-slate-400">Admin Panel</p>
+                                    <h1 class="text-xl font-semibold text-white sm:text-2xl">{{ $title ?? 'Dashboard' }}</h1>
+                                </div>
                             </div>
                             <div class="hidden items-center gap-3 lg:flex">
                                 <span class="rounded-full border border-slate-700/60 bg-slate-800/80 px-3 py-1 text-xs font-semibold text-slate-300">
@@ -188,7 +224,8 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="mt-4 flex gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border border-slate-800/70 bg-slate-900/70 px-3 py-3 lg:hidden">
+                        <!-- Mobile horizontal navigation - removed as we now have sidebar -->
+                        <div class="mt-4 hidden gap-2 overflow-x-auto whitespace-nowrap rounded-2xl border border-slate-800/70 bg-slate-900/70 px-3 py-3">
                             @foreach ($navigation as $item)
                                 @php
                                     $patterns = $item['active'] ?? [$item['route']];
@@ -205,7 +242,7 @@
                         </div>
                     </header>
 
-                    <main class="flex-1 overflow-y-auto px-3 py-5 sm:px-5 lg:px-8">
+                    <main class="flex-1 overflow-y-auto px-3 py-4 sm:px-5 sm:py-5 lg:px-8">
                         <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
                             @if (session('status'))
                                 <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200 shadow">

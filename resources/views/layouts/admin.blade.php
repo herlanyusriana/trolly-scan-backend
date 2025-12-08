@@ -160,23 +160,37 @@
                     }"
                     x-cloak
                 >
-                    <div class="flex items-center justify-between gap-2 text-lg font-semibold text-blue-400">
-                        <div class="flex items-center gap-2" x-show="!sidebarCollapsed" x-transition>
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 text-lg font-semibold text-blue-400" x-show="!sidebarCollapsed" x-transition>
                             <img src="{{ asset('images/logo GCI.png') }}" alt="PT Geum Cheon Indo" class="h-10 w-auto rounded-xl bg-white/5 p-1">
                             <span>In-Out Trolley</span>
                         </div>
                         <div x-show="sidebarCollapsed" x-transition class="mx-auto">
                             <img src="{{ asset('images/logo GCI.png') }}" alt="PT Geum Cheon Indo" class="h-10 w-auto rounded-xl bg-white/5 p-1">
                         </div>
-                        <!-- Close button for mobile -->
-                        <button
-                            @click="mobileMenuOpen = false"
-                            class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white lg:hidden"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+
+                        <div class="flex items-center gap-2">
+                            <!-- Toggle Sidebar Button (Desktop Only) -->
+                            <button
+                                @click="sidebarCollapsed = !sidebarCollapsed"
+                                class="hidden rounded-lg border border-slate-700 p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-white lg:block"
+                                :title="sidebarCollapsed ? 'Tampilkan Sidebar' : 'Sembunyikan Sidebar'"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="sidebarCollapsed ? 'rotate-180' : ''">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
+                                </svg>
+                            </button>
+
+                            <!-- Close button for mobile -->
+                            <button
+                                @click="mobileMenuOpen = false"
+                                class="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white lg:hidden"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     <nav class="mt-10 flex flex-1 flex-col gap-1 text-sm">
                         @foreach ($navigation as $item)
@@ -208,18 +222,6 @@
                                 <span x-show="!sidebarCollapsed" x-transition>Keluar</span>
                             </button>
                         </form>
-
-                        <!-- Toggle Sidebar Button (Desktop Only) -->
-                        <button
-                            @click="sidebarCollapsed = !sidebarCollapsed"
-                            class="mt-4 hidden w-full items-center justify-center gap-2 rounded-xl border border-slate-700 px-4 py-2 text-xs font-semibold text-slate-400 transition hover:bg-slate-800 lg:flex"
-                            :class="sidebarCollapsed ? 'justify-center' : ''"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="sidebarCollapsed ? 'rotate-180' : ''">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
-                            </svg>
-                            <span x-show="!sidebarCollapsed" x-transition>Sembunyikan</span>
-                        </button>
                     </div>
                 </aside>
 
